@@ -11,22 +11,11 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    // path 배열로 경로 조합
-    const pathParts = Array.isArray(req.query.path)
-      ? req.query.path
-      : [req.query.path].filter(Boolean);
+    const url = new URL(req.url, 'https://dummy.com');
+    const fullPath = url.pathname.replace(/^\/api/, '') + (url.search || '');
 
-    const basePath = '/' + pathParts.join('/');
+    console.log('fullPath:', fullPath);
 
-    // path 제외한 나머지 쿼리스트링
-    const query = Object.assign({}, req.query);
-    delete query.path;
-    const qs = new URLSearchParams(query).toString();
-    const fullPath = qs ? `${basePath}?${qs}` : basePath;
-
-    console.log('fullPath:', fullPath); // 로그 확인용
-
-    // HMAC-SHA256 서명
     const ts = Date.now().toString();
     const sig = crypto
       .createHmac('sha256', process.env.SECRET_KEY)
@@ -54,12 +43,11 @@ module.exports = async function handler(req, res) {
     );
 
     const text = await response.text();
-    console.log('naver response:', text); // 로그 확인용
+    console.log('naver response:', response.status, text.slice(0, 200));
 
     try {
-      const data = JSON.parse(text);
-      res.status(response.status).json(data);
-    } catch (e) {
+      res.status(response.status).json(JSON.parse(text));
+    } catch {
       res.status(response.status).send(text);
     }
 
