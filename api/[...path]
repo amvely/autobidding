@@ -1,7 +1,6 @@
 const crypto = require('crypto');
 
-export default async function handler(req, res) {
-  // CORS 헤더
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -12,7 +11,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    // URL 경로 조합
     const pathParts = req.query.path || [];
     const basePath = '/' + pathParts.join('/');
     const query = { ...req.query };
@@ -20,14 +18,12 @@ export default async function handler(req, res) {
     const queryString = new URLSearchParams(query).toString();
     const fullPath = queryString ? `${basePath}?${queryString}` : basePath;
 
-    // HMAC-SHA256 서명
     const ts = Date.now().toString();
     const sig = crypto
       .createHmac('sha256', process.env.SECRET_KEY)
       .update(`${ts}.${req.method}.${fullPath}`)
       .digest('base64');
 
-    // 네이버 API 호출
     const fetchOpts = {
       method: req.method,
       headers: {
@@ -38,6 +34,7 @@ export default async function handler(req, res) {
         'X-Signature': sig,
       },
     };
+
     if (req.body && req.method !== 'GET') {
       fetchOpts.body = JSON.stringify(req.body);
     }
@@ -52,4 +49,4 @@ export default async function handler(req, res) {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-}
+};
