@@ -714,10 +714,10 @@ async function apiReq(method, path, body) {
 
 // ── 연결 ──
 async function connectApi() {
+  // 프록시 서버(Vercel)가 환경변수로 인증 처리하므로 입력값 불필요
   cfg.apiKey = document.getElementById('ci-ak').value.trim() || 'proxy';
-cfg.secretKey = document.getElementById('ci-sk').value.trim() || 'proxy';
-cfg.customerId = document.getElementById('ci-cid').value.trim() || 'proxy';
-  if (!cfg.apiKey || !cfg.secretKey || !cfg.customerId) { showErr('API 키, 시크릿 키, 고객 ID를 모두 입력하세요.'); return; }
+  cfg.secretKey = document.getElementById('ci-sk').value.trim() || 'proxy';
+  cfg.customerId = document.getElementById('ci-cid').value.trim() || 'proxy';
   const el = document.getElementById('conn-st');
   el.innerHTML = '<div class="cdot" style="background:var(--amber)"></div><span style="color:var(--amber)">연결 중...</span>';
   try {
