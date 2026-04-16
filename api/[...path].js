@@ -11,11 +11,13 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    // req.url 대신 req.query.path로 경로 재구성 (Vercel catch-all 라우팅)
-    const pathParts = req.query.path || [];
+    // Vercel catch-all: req.query.path = ['ncc','campaigns'] 등
+    const pathParts = Array.isArray(req.query.path) ? req.query.path : [req.query.path].filter(Boolean);
+    
+    // path를 제외한 나머지 쿼리파라미터만 추출
     const queryParams = { ...req.query };
-    delete queryParams.path; // path 파라미터 제거
-
+    delete queryParams.path;
+    
     const queryString = Object.keys(queryParams).length
       ? '?' + new URLSearchParams(queryParams).toString()
       : '';
@@ -25,8 +27,9 @@ module.exports = async function handler(req, res) {
     console.log('fullPath:', fullPath);
 
     const ts = Date.now().toString();
+    const secretKey = (process.env.SECRET_KEY || '').trim();
     const sig = crypto
-      .createHmac('sha256', process.env.SECRET_KEY)
+      .createHmac('sha256', secretKey)
       .update(`${ts}.${req.method}.${fullPath}`)
       .digest('base64');
 
@@ -35,8 +38,8 @@ module.exports = async function handler(req, res) {
       headers: {
         'Content-Type': 'application/json',
         'X-Timestamp': ts,
-        'X-API-KEY': process.env.API_KEY,
-        'X-Customer': process.env.CUSTOMER_ID,
+        'X-API-KEY': (process.env.API_KEY || '').trim(),
+        'X-Customer': (process.env.CUSTOMER_ID || '').trim(),
         'X-Signature': sig,
       },
     };
@@ -45,13 +48,12 @@ module.exports = async function handler(req, res) {
       fetchOpts.body = JSON.stringify(req.body);
     }
 
-    const response = await fetch(
-      `https://api.searchad.naver.com${fullPath}`,
-      fetchOpts
-    );
+    const apiUrl = `https://api.searchad.naver.com${fullPath}`;
+    console.log('calling:', apiUrl);
 
+    const response = await fetch(apiUrl, fetchOpts);
     const text = await response.text();
-    console.log('naver response:', response.status, text.slice(0, 200));
+    console.log('naver response:', response.status, text.slice(0, 300));
 
     try {
       res.status(response.status).json(JSON.parse(text));
