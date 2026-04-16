@@ -500,7 +500,7 @@ tr:hover td{background:var(--bg3)}
             <div class="api-field"><div class="api-key">인증 방식</div><div class="api-val">HMAC-SHA256 (X-Timestamp · X-API-KEY · X-Customer · X-Signature)</div></div>
             <div class="api-field"><div class="api-key">순위 조회 (당일 시간대)</div><div class="api-val">GET /stats?ids=nkw-XXXX&amp;fields=pcNxAvgRnk,pcNxAvgCpc,mblNxAvgRnk,mblNxAvgCpc&amp;timeUnit=time&amp;datePreset=today</div></div>
             <div class="api-field"><div class="api-key">비용 조회 (7일)</div><div class="api-val">GET /stats?ids=nkw-XXXX&amp;fields=cost,avgCpc,clkCnt&amp;timeUnit=day&amp;datePreset=last7Days</div></div>
-            <div class="api-field"><div class="api-key">키워드 조회</div><div class="api-val">GET /ncc/keywords?adGroupId={id}</div></div>
+            <div class="api-field"><div class="api-key">키워드 조회</div><div class="api-val">GET /ncc/keywords?nccAdgroupId={id}</div></div>
             <div class="api-field"><div class="api-key">입찰 변경</div><div class="api-val">PUT /ncc/keywords/{keywordId} · body: {"bidAmt": N}</div></div>
           </div>
           <div class="warn-box">⚠ 브라우저에서 직접 API 호출 시 CORS 오류가 발생합니다. Node.js 또는 Python 백엔드 프록시 서버를 통해 API를 호출하고, 이 HTML에서 프록시 주소로 요청을 보내는 구조를 권장합니다.<br><br>아래 변수에서 프록시 URL을 설정하세요: <code style="color:var(--teal)">const PROXY_BASE = 'https://autobidding-neon.vercel.app/api';</code></div>
@@ -678,8 +678,8 @@ app.listen(<span class="cv">3000</span>);</div>
 </div>
 
 <script>
-// ── 프록시 서버 URL (여기에 실제 프록시 주소를 입력하세요) ──
-const PROXY_BASE = 'https://autobidding-neon.vercel.app/api';
+// ── 프록시 서버 URL ──
+const PROXY_BASE = 'https://autobidding-neon.vercel.app/api/call';
 const VAT = 1.1;
 const CAMP_TYPE_MAP = {}; // campId → type (API에서 받아와서 채워짐)
 const CAMP_NAME_MAP = {}; // campId → name
@@ -702,12 +702,9 @@ async function hmacSign(ts, method, path) {
   return btoa(String.fromCharCode(...new Uint8Array(sig)));
 }
 async function apiReq(method, path, body) {
-  const ts = Date.now().toString(), sig = await hmacSign(ts, method, path);
-  const opts = {method, headers:{'Content-Type':'application/json','X-Timestamp':ts,'X-API-KEY':cfg.apiKey,'X-Customer':cfg.customerId,'X-Signature':sig}};
+  const opts = {method, headers:{'Content-Type':'application/json','X-Naver-Path':path}};
   if (body) opts.body = JSON.stringify(body);
-  // 프록시를 통해 호출
-  const url = PROXY_BASE + path;
-  const r = await fetch(url, opts);
+  const r = await fetch(PROXY_BASE, opts);
   if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
   return r.json();
 }
@@ -766,8 +763,9 @@ async function loadKw() {
         }
       }
     } else {
-      const agData = await apiReq('GET', '/ncc/adgroups?campaignId=' + campId);
+      const agData = await apiReq('GET', '/ncc/adgroups?nccCampaignId=' + campId);
       const ags = Array.isArray(agData) ? agData : (agData.adGroups || []);
+      // populate group dropdown
       const grpSel = document.getElementById('sel-grp');
       grpSel.innerHTML = '<option value="all">전체</option>';
       ags.forEach(ag => { const o = document.createElement('option'); o.value = ag.nccAdgroupId; o.textContent = ag.name; grpSel.appendChild(o); });
