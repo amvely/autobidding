@@ -11,23 +11,27 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    // req.url 방식으로 경로 추출
-    const rawUrl = req.url || '';
-    const qIdx = rawUrl.indexOf('?');
-    const rawPath = qIdx >= 0 ? rawUrl.slice(0, qIdx) : rawUrl;
-    const rawQuery = qIdx >= 0 ? rawUrl.slice(qIdx) : '';
+    // 디버그: req.url과 req.query 전체 출력
+    console.log('req.url:', req.url);
+    console.log('req.query:', JSON.stringify(req.query));
 
-    const cleanPath = rawPath.replace(/^\/api/, '') || '/';
-    const fullPath = cleanPath + rawQuery;
+    // req.query에서 path 제거하고 나머지 쿼리파라미터 추출
+    const pathParts = Array.isArray(req.query.path)
+      ? req.query.path
+      : req.query.path ? [req.query.path] : [];
 
-    console.log('req.url:', rawUrl);
+    const queryParams = { ...req.query };
+    delete queryParams.path;
+
+    const queryString = Object.keys(queryParams).length
+      ? '?' + new URLSearchParams(queryParams).toString()
+      : '';
+
+    const fullPath = '/' + pathParts.join('/') + queryString;
     console.log('fullPath:', fullPath);
 
     const ts = Date.now().toString();
     const secretKey = (process.env.SECRET_KEY || '').trim();
-    const apiKey = (process.env.API_KEY || '').trim();
-    const customerId = (process.env.CUSTOMER_ID || '').trim();
-
     const signMessage = `${ts}.${req.method}.${fullPath}`;
     console.log('signMessage:', signMessage);
 
@@ -41,8 +45,8 @@ module.exports = async function handler(req, res) {
       headers: {
         'Content-Type': 'application/json',
         'X-Timestamp': ts,
-        'X-API-KEY': apiKey,
-        'X-Customer': customerId,
+        'X-API-KEY': (process.env.API_KEY || '').trim(),
+        'X-Customer': (process.env.CUSTOMER_ID || '').trim(),
         'X-Signature': sig,
       },
     };
