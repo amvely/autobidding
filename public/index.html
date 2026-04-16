@@ -740,9 +740,9 @@ function populateCampaignDropdowns() {
   const s1 = document.getElementById('sel-cmp'), s2 = document.getElementById('sel-grp2');
   s1.innerHTML = '<option value="all">전체</option>';
   campaigns.forEach(c => {
-    CAMP_NAME_MAP[c.campaignId] = c.name;
-    CAMP_TYPE_MAP[c.campaignId] = c.campaignTp || '파워링크';
-    const o = document.createElement('option'); o.value = c.campaignId; o.textContent = c.name;
+    CAMP_NAME_MAP[c.nccCampaignId] = c.name;
+    CAMP_TYPE_MAP[c.nccCampaignId] = c.campaignTp || '파워링크';
+    const o = document.createElement('option'); o.value = c.nccCampaignId; o.textContent = c.name;
     s1.appendChild(o);
   });
 }
@@ -756,12 +756,12 @@ async function loadKw() {
     if (campId === 'all') {
       // 전체 캠페인의 광고그룹 조회
       for (const c of campaigns) {
-        const agData = await apiReq('GET', '/ncc/adgroups?campaignId=' + c.campaignId);
+        const agData = await apiReq('GET', '/ncc/adgroups?nccCampaignId=' + c.nccCampaignId);
         const ags = Array.isArray(agData) ? agData : (agData.adGroups || []);
         for (const ag of ags) {
-          const kwData = await apiReq('GET', '/ncc/keywords?adGroupId=' + ag.adGroupId);
+          const kwData = await apiReq('GET', '/ncc/keywords?nccAdgroupId=' + ag.nccAdgroupId);
           (Array.isArray(kwData) ? kwData : (kwData.keywords || [])).forEach(k => {
-            kwList.push({id: k.keywordId, keyword: k.keyword, campId: c.campaignId, adGroupId: ag.adGroupId, adGroupName: ag.name, bidAmt: k.bidAmt || 70});
+            kwList.push({id: k.nccKeywordId, keyword: k.keyword, campId: c.nccCampaignId, adGroupId: ag.nccAdgroupId, adGroupName: ag.name, bidAmt: k.bidAmt || 70});
           });
         }
       }
@@ -770,11 +770,11 @@ async function loadKw() {
       const ags = Array.isArray(agData) ? agData : (agData.adGroups || []);
       const grpSel = document.getElementById('sel-grp');
       grpSel.innerHTML = '<option value="all">전체</option>';
-      ags.forEach(ag => { const o = document.createElement('option'); o.value = ag.adGroupId; o.textContent = ag.name; grpSel.appendChild(o); });
+      ags.forEach(ag => { const o = document.createElement('option'); o.value = ag.nccAdgroupId; o.textContent = ag.name; grpSel.appendChild(o); });
       for (const ag of ags) {
-        const kwData = await apiReq('GET', '/ncc/keywords?adGroupId=' + ag.adGroupId);
+        const kwData = await apiReq('GET', '/ncc/keywords?nccAdgroupId=' + ag.nccAdgroupId);
         (Array.isArray(kwData) ? kwData : (kwData.keywords || [])).forEach(k => {
-          kwList.push({id: k.keywordId, keyword: k.keyword, campId: campId, adGroupId: ag.adGroupId, adGroupName: ag.name, bidAmt: k.bidAmt || 70});
+          kwList.push({id: k.nccKeywordId, keyword: k.keyword, campId: campId, adGroupId: ag.nccAdgroupId, adGroupName: ag.name, bidAmt: k.bidAmt || 70});
         });
       }
     }
