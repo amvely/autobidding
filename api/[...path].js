@@ -3,7 +3,7 @@ const crypto = require('crypto');
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Timestamp, X-API-KEY, X-Customer, X-Signature');
 
   if (req.method === 'OPTIONS') {
     res.status(200).end();
@@ -11,8 +11,16 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const url = new URL(req.url, 'https://dummy.com');
-    const fullPath = url.pathname.replace(/^\/api/, '') + (url.search || '');
+    // req.url 대신 req.query.path로 경로 재구성 (Vercel catch-all 라우팅)
+    const pathParts = req.query.path || [];
+    const queryParams = { ...req.query };
+    delete queryParams.path; // path 파라미터 제거
+
+    const queryString = Object.keys(queryParams).length
+      ? '?' + new URLSearchParams(queryParams).toString()
+      : '';
+
+    const fullPath = '/' + pathParts.join('/') + queryString;
 
     console.log('fullPath:', fullPath);
 
