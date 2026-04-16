@@ -11,26 +11,29 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    // Vercel catch-all: req.query.path = ['ncc','campaigns'] 등
-    const pathParts = Array.isArray(req.query.path) ? req.query.path : [req.query.path].filter(Boolean);
-    
-    // path를 제외한 나머지 쿼리파라미터만 추출
-    const queryParams = { ...req.query };
-    delete queryParams.path;
-    
-    const queryString = Object.keys(queryParams).length
-      ? '?' + new URLSearchParams(queryParams).toString()
-      : '';
+    // req.url 방식으로 경로 추출
+    const rawUrl = req.url || '';
+    const qIdx = rawUrl.indexOf('?');
+    const rawPath = qIdx >= 0 ? rawUrl.slice(0, qIdx) : rawUrl;
+    const rawQuery = qIdx >= 0 ? rawUrl.slice(qIdx) : '';
 
-    const fullPath = '/' + pathParts.join('/') + queryString;
+    const cleanPath = rawPath.replace(/^\/api/, '') || '/';
+    const fullPath = cleanPath + rawQuery;
 
+    console.log('req.url:', rawUrl);
     console.log('fullPath:', fullPath);
 
     const ts = Date.now().toString();
     const secretKey = (process.env.SECRET_KEY || '').trim();
+    const apiKey = (process.env.API_KEY || '').trim();
+    const customerId = (process.env.CUSTOMER_ID || '').trim();
+
+    const signMessage = `${ts}.${req.method}.${fullPath}`;
+    console.log('signMessage:', signMessage);
+
     const sig = crypto
       .createHmac('sha256', secretKey)
-      .update(`${ts}.${req.method}.${fullPath}`)
+      .update(signMessage)
       .digest('base64');
 
     const fetchOpts = {
@@ -38,8 +41,8 @@ module.exports = async function handler(req, res) {
       headers: {
         'Content-Type': 'application/json',
         'X-Timestamp': ts,
-        'X-API-KEY': (process.env.API_KEY || '').trim(),
-        'X-Customer': (process.env.CUSTOMER_ID || '').trim(),
+        'X-API-KEY': apiKey,
+        'X-Customer': customerId,
         'X-Signature': sig,
       },
     };
