@@ -9,10 +9,14 @@ module.exports = async function handler(req, res) {
 
   try {
     const fullPath = req.headers['x-naver-path'] || '';
+
+    // 서명은 쿼리스트링 제외한 path만 사용
+    const signPath = fullPath.split('?')[0];
+
     const ts = Date.now().toString();
     const sig = crypto
       .createHmac('sha256', (process.env.SECRET_KEY || '').trim())
-      .update(`${ts}.${req.method}.${fullPath}`)
+      .update(`${ts}.${req.method}.${signPath}`)
       .digest('base64');
 
     const fetchOpts = {
