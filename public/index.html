@@ -790,11 +790,14 @@ async function fetchStats() {
   const ids = kws.map(k => k.id).join(',');
   try {
     const todayData = await apiReq('GET', `/stats?ids=${ids}&fields=pcNxAvgRnk,pcNxAvgCpc,mblNxAvgRnk,mblNxAvgCpc&timeUnit=time&datePreset=today`);
-    (todayData.data || []).forEach(item => { stats[item.id] = {...(stats[item.id]||{}), ...item}; });
+    (todayData.data || todayData || []).forEach(item => { stats[item.id] = {...(stats[item.id]||{}), ...item}; });
+    buildHourlyFromApi(todayData.data || todayData || []);
+    document.getElementById('s-upd').textContent = new Date().toLocaleTimeString('ko-KR');
+  } catch(e) { console.warn('통계(오늘):', e.message); }
+  try {
     const costData = await apiReq('GET', `/stats?ids=${ids}&fields=cost,avgCpc&timeUnit=day&datePreset=last7Days`);
-    // 7일 평균 계산
     const costByKw = {};
-    (costData.data || []).forEach(item => {
+    (costData.data || costData || []).forEach(item => {
       if (!costByKw[item.id]) costByKw[item.id] = {costs:[], cpcs:[]};
       if (item.cost) costByKw[item.id].costs.push(item.cost);
       if (item.avgCpc) costByKw[item.id].cpcs.push(item.avgCpc);
@@ -802,15 +805,13 @@ async function fetchStats() {
     Object.keys(costByKw).forEach(id => {
       const d = costByKw[id];
       stats[id] = {...(stats[id]||{}),
-        cost: d.costs.slice(-1)[0] || 0, // 전일
+        cost: d.costs.slice(-1)[0] || 0,
         avg7dCost: d.costs.length ? Math.round(d.costs.reduce((a,b)=>a+b,0)/d.costs.length) : 0,
         avg7dCpc: d.cpcs.length ? Math.round(d.cpcs.reduce((a,b)=>a+b,0)/d.cpcs.length) : 0,
       };
     });
-    // 시간대 데이터 빌드
-    buildHourlyFromApi(todayData.data || []);
     document.getElementById('s-upd').textContent = new Date().toLocaleTimeString('ko-KR');
-  } catch(e) { showErr('통계 조회 실패: ' + e.message); }
+  } catch(e) { console.warn('통계(비용):', e.message); }
 }
 
 function buildHourlyFromApi(timeData) {
@@ -921,7 +922,7 @@ async function applyBid(kwId) {
   const kw = kws.find(k=>k.id===kwId); if (!kw) return;
   const old = kw.bidAmt; kw.bidAmt = nb;
   try {
-    await apiReq('PUT', `/ncc/keywords/${kwId}`, {bidAmt: nb});
+    await apiReq('PUT', `/ncc/keywords/${kwId}?fields=bidAmt`, {bidAmt: nb});
     toast(`✅ "${kw.keyword}" 입찰가 → ${nb.toLocaleString()}원`, 'var(--green)');
   } catch(e) { showErr('입찰 실패: '+e.message); kw.bidAmt=old; }
   renderKw(); renderMon(); renderCost();
@@ -932,7 +933,7 @@ async function applyBidCost(id) {
   const nb = parseInt(inp.value); if (isNaN(nb)||nb<70) { showErr('70원 이상'); return; }
   const old = kw.bidAmt; kw.bidAmt = nb;
   try {
-    await apiReq('PUT', `/ncc/keywords/${id}`, {bidAmt: nb});
+    await apiReq('PUT', `/ncc/keywords/${id}?fields=bidAmt`, {bidAmt: nb});
     toast(`✅ "${kw.keyword}" 입찰가 → ${nb.toLocaleString()}원`, 'var(--green)');
   } catch(e) { showErr('입찰 실패: '+e.message); kw.bidAmt=old; }
   renderKw(); renderMon(); renderCost();
@@ -1017,7 +1018,7 @@ async function runAutoBid() {
       const nb=Math.max(mn,Math.min(mx,kw.bidAmt+dir*amt));
       if(nb!==kw.bidAmt){
         const old=kw.bidAmt; kw.bidAmt=nb;
-        try { await apiReq('PUT',`/ncc/keywords/${kw.id}`,{bidAmt:nb}); } catch(e) { kw.bidAmt=old; continue; }
+        try { await apiReq('PUT',`/ncc/keywords/${kw.id}?fields=bidAmt`,{bidAmt:nb}); } catch(e) { kw.bidAmt=old; continue; }
         const e={keyword:kw.keyword,old,nw:nb,diff:md,dir:dir>0?'인상':'인하',time:new Date().toLocaleTimeString('ko-KR')};
         autoBidLog.unshift(e); changed.push(e);
       }
