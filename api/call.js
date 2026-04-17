@@ -3,24 +3,27 @@ const crypto = require('crypto');
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Naver-Path');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') { res.status(200).end(); return; }
 
   try {
-    const fullPath = req.headers['x-naver-path'] || '';
+    // path와 body를 POST body에서 받음
+    const { path, method: naverMethod, body: naverBody } = req.body || {};
+    const fullPath = path || '';
+    const method = naverMethod || 'GET';
 
-    // 서명은 쿼리스트링 제외한 path만 사용
+    // 서명은 ? 앞 path만 사용
     const signPath = fullPath.split('?')[0];
 
     const ts = Date.now().toString();
     const sig = crypto
       .createHmac('sha256', (process.env.SECRET_KEY || '').trim())
-      .update(`${ts}.${req.method}.${signPath}`)
+      .update(`${ts}.${method}.${signPath}`)
       .digest('base64');
 
     const fetchOpts = {
-      method: req.method,
+      method,
       headers: {
         'Content-Type': 'application/json',
         'X-Timestamp': ts,
@@ -30,9 +33,7 @@ module.exports = async function handler(req, res) {
       },
     };
 
-    if (req.body && req.method !== 'GET') {
-      fetchOpts.body = JSON.stringify(req.body);
-    }
+    if (naverBody) fetchOpts.body = JSON.stringify(naverBody);
 
     const response = await fetch(`https://api.searchad.naver.com${fullPath}`, fetchOpts);
     const text = await response.text();
