@@ -581,7 +581,6 @@ function saveAdvertisers() {
 async function apiReq(method, path, body, advId) {
   const id = advId || activeAdvId;
   const st = advState[id] || {};
-  // advState에 저장된 크레덴셜 우선 사용
   const ak  = st.apiKey     || '';
   const sk  = st.secretKey  || '';
   const cid = st.customerId || '';
@@ -591,7 +590,11 @@ async function apiReq(method, path, body, advId) {
     headers: {'Content-Type':'application/json'},
     body: JSON.stringify({path, method, body: body||null, apiKey:ak, secretKey:sk, customerId:cid})
   });
-  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  if (!r.ok) {
+    let msg = `HTTP ${r.status}`;
+    try { const e = await r.json(); msg += ' · ' + (e.message || e.error || JSON.stringify(e)); } catch {}
+    throw new Error(msg);
+  }
   return r.json();
 }
 
@@ -966,7 +969,7 @@ async function applyBid(kwId) {
   const kw  = (st.kws||[]).find(k=>k.id===kwId); if(!kw) return;
   const old = kw.bidAmt; kw.bidAmt = nb;
   try {
-    await apiReq('PUT', `/ncc/keywords/${kwId}?fields=bidAmt`, {bidAmt:nb});
+    await apiReq('PUT', `/ncc/keywords/${kwId}?fields=bidAmt`, {nccKeywordId: kwId, bidAmt:nb});
     toast(`✅ "${kw.keyword}" → ${nb.toLocaleString()}원`, 'var(--green)');
   } catch(e) { showErr('입찰 실패: '+e.message); kw.bidAmt=old; inp.value=old; }
   renderKw(); renderAbKw();
@@ -1078,7 +1081,7 @@ async function runAutoBidForAdv(advId) {
       if (nb !== kw.bidAmt) {
         const old = kw.bidAmt; kw.bidAmt = nb;
         try {
-          await apiReq('PUT', `/ncc/keywords/${kw.id}?fields=bidAmt`, {bidAmt: nb}, advId);
+          await apiReq('PUT', `/ncc/keywords/${kw.id}?fields=bidAmt`, {nccKeywordId: kw.id, bidAmt: nb}, advId);
           st.bidLastChanged[kw.id] = Date.now();
         } catch(e) { kw.bidAmt = old; toast('❌ 입찰 실패: ' + e.message, 'var(--red)'); continue; }
         const a = advertisers.find(x => x.id === advId) || {};
