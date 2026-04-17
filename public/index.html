@@ -969,7 +969,7 @@ async function applyBid(kwId) {
   const kw  = (st.kws||[]).find(k=>k.id===kwId); if(!kw) return;
   const old = kw.bidAmt; kw.bidAmt = nb;
   try {
-    await apiReq('PUT', `/ncc/keywords/${kwId}?fields=bidAmt`, {nccKeywordId: kwId, bidAmt:nb});
+    await apiReq('PUT', `/ncc/keywords/${kwId}?fields=bidAmt`, {nccKeywordId: kwId, nccAdgroupId: kw.adGroupId, bidAmt:nb});
     toast(`✅ "${kw.keyword}" → ${nb.toLocaleString()}원`, 'var(--green)');
   } catch(e) { showErr('입찰 실패: '+e.message); kw.bidAmt=old; inp.value=old; }
   renderKw(); renderAbKw();
@@ -1081,7 +1081,7 @@ async function runAutoBidForAdv(advId) {
       if (nb !== kw.bidAmt) {
         const old = kw.bidAmt; kw.bidAmt = nb;
         try {
-          await apiReq('PUT', `/ncc/keywords/${kw.id}?fields=bidAmt`, {nccKeywordId: kw.id, bidAmt: nb}, advId);
+          await apiReq('PUT', `/ncc/keywords/${kw.id}?fields=bidAmt`, {nccKeywordId: kw.id, nccAdgroupId: kw.adGroupId, bidAmt: nb}, advId);
           st.bidLastChanged[kw.id] = Date.now();
         } catch(e) { kw.bidAmt = old; toast('❌ 입찰 실패: ' + e.message, 'var(--red)'); continue; }
         const a = advertisers.find(x => x.id === advId) || {};
