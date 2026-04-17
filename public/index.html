@@ -1041,51 +1041,66 @@ function getDeviation(kw, st) {
 function runAutoBid() { runAutoBidForAdv(activeAdvId); }
 
 async function runAutoBidForAdv(advId) {
-  const st  = advState[advId]; if(!st||!st.kws.length) return;
-  const abs = st.abSettings;
+  const st = advState[advId];
+  if (!st)            { toast('❌ advState 없음', 'var(--red)'); return; }
+  if (!st.kws.length) { toast('❌ 키워드 없음 — 먼저 불러오세요', 'var(--red)'); return; }
+
+  const abs        = st.abSettings;
   const cooldownMs = abs.cooldown * 60 * 1000;
-  const now = Date.now();
-  const changed=[], skipped=[];
+  const now        = Date.now();
+  const changed=[], skipped=[], noTarget=[], noStats=[];
 
   for (const kw of st.kws) {
     if (!st.autoBidEnabled[kw.id]) continue;
 
     // 쿨다운 체크
-    const last = st.bidLastChanged[kw.id]||0;
-    if (now-last < cooldownMs) {
-      skipped.push(kw.keyword);
-      continue;
-    }
+    const last = st.bidLastChanged[kw.id] || 0;
+    if (now - last < cooldownMs) { skipped.push(kw.keyword); continue; }
+
+    // 순위 데이터 확인
+    const s = st.stats?.[kw.id] || {};
+    if (!s.pcRnk && !s.moRnk) { noStats.push(kw.keyword); continue; }
+
+    // 목표순위 확인
+    const pcT = st.pcTargets?.[kw.id], moT = st.moTargets?.[kw.id];
+    if (!pcT && !moT) { noTarget.push(kw.keyword); continue; }
 
     const dev = getDeviation(kw, st);
-    let dir=0;
-    if (dev>=abs.threshold) dir=1;
-    else if (abs.downEnabled&&dev<=-abs.threshold) dir=-1;
+    let dir = 0;
+    if (dev >= abs.threshold) dir = 1;
+    else if (abs.downEnabled && dev <= -abs.threshold) dir = -1;
 
-    if (dir!==0) {
-      const amt = dir>0 ? abs.upAmt : abs.downAmt;
-      const mn  = abs.bidMin||70;
-      const mx  = abs.bidMax||5000;
-      const nb  = Math.max(mn,Math.min(mx, kw.bidAmt+dir*amt));
-      if (nb!==kw.bidAmt) {
-        const old=kw.bidAmt; kw.bidAmt=nb;
+    if (dir !== 0) {
+      const amt = dir > 0 ? abs.upAmt : abs.downAmt;
+      const mn  = abs.bidMin || 70;
+      const mx  = abs.bidMax || 5000;
+      const nb  = Math.max(mn, Math.min(mx, kw.bidAmt + dir * amt));
+      if (nb !== kw.bidAmt) {
+        const old = kw.bidAmt; kw.bidAmt = nb;
         try {
-          await apiReq('PUT',`/ncc/keywords/${kw.id}?fields=bidAmt`,{bidAmt:nb},advId);
-          st.bidLastChanged[kw.id]=Date.now();
-        } catch(e) { kw.bidAmt=old; continue; }
-        const a=advertisers.find(x=>x.id===advId)||{};
-        const modeLabel={max:'최대편차',pc:'PC',mo:'MO'}[abs.mode];
-        const entry={keyword:kw.keyword,old,nw:nb,diff:dev,dir:dir>0?'인상':'인하',mode:modeLabel,advName:a.name,time:new Date().toLocaleTimeString('ko-KR')};
+          await apiReq('PUT', `/ncc/keywords/${kw.id}?fields=bidAmt`, {bidAmt: nb}, advId);
+          st.bidLastChanged[kw.id] = Date.now();
+        } catch(e) { kw.bidAmt = old; toast('❌ 입찰 실패: ' + e.message, 'var(--red)'); continue; }
+        const a = advertisers.find(x => x.id === advId) || {};
+        const modeLabel = {max:'최대편차', pc:'PC', mo:'MO'}[abs.mode];
+        const entry = {keyword:kw.keyword, old, nw:nb, diff:dev, dir:dir>0?'인상':'인하', mode:modeLabel, advName:a.name, time:new Date().toLocaleTimeString('ko-KR')};
         st.autoBidLog.unshift(entry); changed.push(entry);
-        await new Promise(r=>setTimeout(r,300));
+        await new Promise(r => setTimeout(r, 300));
+      } else {
+        toast(`ℹ "${kw.keyword}" 입찰가 범위 한계 (${nb.toLocaleString()}원)`, 'var(--text3)');
       }
     }
   }
 
-  if (advId===activeAdvId) {
-    if (changed.length) { renderKw();renderAbKw();renderAbLog(); }
-    changed.forEach(c=>toast(`⚡ [${c.mode}] ${c.dir}: "${c.keyword}" → ${c.nw.toLocaleString()}원`,'var(--amber)'));
-    if (skipped.length) toast(`⏳ 쿨다운 스킵 ${skipped.length}개`,'var(--text3)');
+  if (advId === activeAdvId) {
+    if (changed.length) { renderKw(); renderAbKw(); renderAbLog(); }
+    changed.forEach(c => toast(`⚡ [${c.mode}] ${c.dir}: "${c.keyword}" → ${c.nw.toLocaleString()}원`, 'var(--amber)'));
+    if (skipped.length)  toast(`⏳ 쿨다운 스킵: ${skipped.join(', ')}`, 'var(--text3)');
+    if (noStats.length)  toast(`📭 순위 데이터 없음: ${noStats.join(', ')}`, 'var(--text3)');
+    if (noTarget.length) toast(`🎯 목표순위 미설정: ${noTarget.join(', ')}`, 'var(--text3)');
+    if (!changed.length && !skipped.length && !noStats.length && !noTarget.length) {
+      toast('ℹ 조정 대상 없음 (임계값 미달)', 'var(--text3)');
+    }
   }
 }
 
