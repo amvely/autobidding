@@ -8,17 +8,23 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') { res.status(200).end(); return; }
 
   try {
-    // path와 body를 POST body에서 받음
-    const { path, method: naverMethod, body: naverBody } = req.body || {};
+    const { path, method: naverMethod, body: naverBody, apiKey, secretKey, customerId } = req.body || {};
     const fullPath = path || '';
-    const method = naverMethod || 'GET';
-
-    // 서명은 ? 앞 path만 사용
+    const method   = naverMethod || 'GET';
     const signPath = fullPath.split('?')[0];
 
-    const ts = Date.now().toString();
+    // UI에서 넘긴 키 우선, 없으면 환경변수 fallback
+    const ak  = (apiKey     || process.env.API_KEY     || '').trim();
+    const sk  = (secretKey  || process.env.SECRET_KEY  || '').trim();
+    const cid = (customerId || process.env.CUSTOMER_ID || '').trim();
+
+    if (!ak || !sk || !cid) {
+      return res.status(400).json({ error: 'API 키, 시크릿 키, 고객 ID가 필요합니다.' });
+    }
+
+    const ts  = Date.now().toString();
     const sig = crypto
-      .createHmac('sha256', (process.env.SECRET_KEY || '').trim())
+      .createHmac('sha256', sk)
       .update(`${ts}.${method}.${signPath}`)
       .digest('base64');
 
@@ -26,17 +32,17 @@ module.exports = async function handler(req, res) {
       method,
       headers: {
         'Content-Type': 'application/json',
-        'X-Timestamp': ts,
-        'X-API-KEY': (process.env.API_KEY || '').trim(),
-        'X-Customer': (process.env.CUSTOMER_ID || '').trim(),
-        'X-Signature': sig,
+        'X-Timestamp':  ts,
+        'X-API-KEY':    ak,
+        'X-Customer':   cid,
+        'X-Signature':  sig,
       },
     };
 
     if (naverBody) fetchOpts.body = JSON.stringify(naverBody);
 
     const response = await fetch(`https://api.searchad.naver.com${fullPath}`, fetchOpts);
-    const text = await response.text();
+    const text     = await response.text();
 
     try {
       res.status(response.status).json(JSON.parse(text));
