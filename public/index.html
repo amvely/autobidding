@@ -253,6 +253,7 @@ tr:hover td{background:rgba(30,37,56,.6)}
 <div class="tabs">
   <div class="tab on"  id="tab-kw"       onclick="goTab('kw')">📋 키워드 관리</div>
   <div class="tab"     id="tab-autobid"  onclick="goTab('autobid')">⚡ 자동입찰</div>
+  <div class="tab"     id="tab-adv"      onclick="goTab('adv')">🏢 광고주 관리</div>
   <div class="tab"     id="tab-settings" onclick="goTab('settings')">⚙ 설정 · API 정보</div>
 </div>
 
@@ -459,7 +460,68 @@ tr:hover td{background:rgba(30,37,56,.6)}
   </div>
 </div>
 
-<!-- ═══ 설정 · API 정보 ═══ -->
+<!-- ═══ 광고주 관리 ═══ -->
+<div id="panel-adv" style="display:none">
+  <div style="padding:16px 18px;max-width:860px">
+
+    <!-- 추가 폼 -->
+    <div class="ab-card" style="margin-bottom:14px">
+      <div class="ab-card-title">➕ 광고주 추가</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 160px;gap:9px;align-items:end">
+        <div class="cfg-f">
+          <div class="cfg-lbl">광고주 이름 (메모용)</div>
+          <input class="cfg-inp" id="adv-name" placeholder="예: 브랜드A">
+        </div>
+        <div class="cfg-f">
+          <div class="cfg-lbl">API KEY</div>
+          <input class="cfg-inp" id="adv-ak" placeholder="API 키">
+        </div>
+        <div class="cfg-f">
+          <div class="cfg-lbl">SECRET KEY</div>
+          <input class="cfg-inp" id="adv-sk" type="password" placeholder="시크릿 키">
+        </div>
+        <div class="cfg-f">
+          <div class="cfg-lbl">CUSTOMER ID</div>
+          <input class="cfg-inp" id="adv-cid" placeholder="고객 ID">
+        </div>
+      </div>
+      <div style="margin-top:10px;display:flex;gap:7px">
+        <button class="btn btn-blue" onclick="addAdvertiser()">➕ 추가</button>
+        <button class="btn btn-ghost btn-sm" onclick="exportAdvertisers()">📤 JSON 내보내기</button>
+        <label class="btn btn-ghost btn-sm" style="cursor:pointer">
+          📥 JSON 불러오기
+          <input type="file" accept=".json" style="display:none" onchange="importAdvertisers(event)">
+        </label>
+      </div>
+    </div>
+
+    <!-- 광고주 목록 -->
+    <div class="ab-card">
+      <div class="ab-card-title">🏢 광고주 목록
+        <span id="adv-count" style="font-size:10px;color:var(--text3);font-weight:400;font-family:var(--mono)">0개</span>
+      </div>
+      <div class="tbl-outer">
+        <table>
+          <thead>
+            <tr>
+              <th>이름</th>
+              <th>CUSTOMER ID</th>
+              <th>API KEY</th>
+              <th>연결 상태</th>
+              <th>작업</th>
+            </tr>
+          </thead>
+          <tbody id="adv-body">
+            <tr><td colspan="5" class="no-data">등록된 광고주가 없습니다</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
 <div id="panel-settings" style="display:none">
   <div class="set-page">
     <div class="set-h1">⚙ 설정 · API 연동 정보</div>
@@ -564,11 +626,17 @@ let countdownTimer = null, autoTimer = null;
 // ════════════════════════════════════════
 //  API
 // ════════════════════════════════════════
-async function apiReq(method, path, body) {
+async function apiReq(method, path, body, overrideCfg) {
+  const c = overrideCfg || cfg;
   const r = await fetch(PROXY_BASE, {
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({path, method, body: body || null})
+    body: JSON.stringify({
+      path, method, body: body || null,
+      apiKey:     c.apiKey,
+      secretKey:  c.secretKey,
+      customerId: c.customerId,
+    })
   });
   if (!r.ok) throw new Error(`HTTP ${r.status}`);
   return r.json();
@@ -1095,16 +1163,139 @@ function togSet(key){
 }
 
 // ════════════════════════════════════════
-//  NAV
+//  광고주 관리
 // ════════════════════════════════════════
+let advertisers = JSON.parse(localStorage.getItem('advertisers') || '[]');
+// { id, name, apiKey, secretKey, customerId, status }
+
+function saveAdvertisers() {
+  localStorage.setItem('advertisers', JSON.stringify(advertisers));
+}
+
+function addAdvertiser() {
+  const name = document.getElementById('adv-name').value.trim();
+  const ak   = document.getElementById('adv-ak').value.trim();
+  const sk   = document.getElementById('adv-sk').value.trim();
+  const cid  = document.getElementById('adv-cid').value.trim();
+  if (!name || !ak || !sk || !cid) { showErr('모든 항목을 입력하세요.'); return; }
+  advertisers.push({ id: Date.now(), name, apiKey:ak, secretKey:sk, customerId:cid, status:'unknown' });
+  saveAdvertisers();
+  // 입력 초기화
+  ['adv-name','adv-ak','adv-sk','adv-cid'].forEach(id => document.getElementById(id).value = '');
+  renderAdvertisers();
+  toast('✅ 광고주 추가됨', 'var(--green)');
+}
+
+function deleteAdvertiser(id) {
+  if (!confirm('삭제하시겠습니까?')) return;
+  advertisers = advertisers.filter(a => a.id !== id);
+  saveAdvertisers(); renderAdvertisers();
+  toast('삭제됨', 'var(--red)');
+}
+
+async function testAdvertiser(id) {
+  const adv = advertisers.find(a => a.id === id); if (!adv) return;
+  adv.status = 'testing'; renderAdvertisers();
+  try {
+    const data = await apiReq('GET', '/ncc/campaigns', null, adv);
+    const count = (Array.isArray(data) ? data : (data.campaigns || [])).length;
+    adv.status = 'ok';
+    adv.campCount = count;
+    toast(`✅ "${adv.name}" 연결 성공 · 캠페인 ${count}개`, 'var(--green)');
+  } catch(e) {
+    adv.status = 'fail';
+    toast(`❌ "${adv.name}" 연결 실패: ${e.message}`, 'var(--red)');
+  }
+  saveAdvertisers(); renderAdvertisers();
+}
+
+function loadAdvertiser(id) {
+  const adv = advertisers.find(a => a.id === id); if (!adv) return;
+  // cfg에 적용하고 연결
+  document.getElementById('ci-ak').value  = adv.apiKey;
+  document.getElementById('ci-sk').value  = adv.secretKey;
+  document.getElementById('ci-cid').value = adv.customerId;
+  cfg.apiKey     = adv.apiKey;
+  cfg.secretKey  = adv.secretKey;
+  cfg.customerId = adv.customerId;
+  // 연결 실행
+  connectApi();
+  toast(`"${adv.name}" 정보 불러옴 → 연결 중...`, 'var(--blue)');
+}
+
+function exportAdvertisers() {
+  const data = advertisers.map(a => ({
+    name: a.name, apiKey: a.apiKey, secretKey: a.secretKey, customerId: a.customerId
+  }));
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'advertisers.json'; a.click();
+  URL.revokeObjectURL(url);
+  toast('📤 JSON 내보내기 완료', 'var(--green)');
+}
+
+function importAdvertisers(event) {
+  const file = event.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      const list = Array.isArray(data) ? data : [data];
+      list.forEach(a => {
+        if (a.apiKey && a.secretKey && a.customerId) {
+          advertisers.push({ id:Date.now()+Math.random(), name:a.name||'이름없음', apiKey:a.apiKey, secretKey:a.secretKey, customerId:a.customerId, status:'unknown' });
+        }
+      });
+      saveAdvertisers(); renderAdvertisers();
+      toast(`✅ ${list.length}개 불러옴`, 'var(--green)');
+    } catch { showErr('JSON 파일 형식이 올바르지 않습니다.'); }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+function renderAdvertisers() {
+  const tbody = document.getElementById('adv-body');
+  document.getElementById('adv-count').textContent = advertisers.length + '개';
+  if (!advertisers.length) {
+    tbody.innerHTML = '<tr><td colspan="5" class="no-data">등록된 광고주가 없습니다</td></tr>'; return;
+  }
+  const statusHtml = s => {
+    const m = {
+      unknown: ['var(--text3)',   '● 미확인'],
+      testing: ['var(--amber)',   '○ 확인 중...'],
+      ok:      ['var(--green)',   '● 연결됨'],
+      fail:    ['var(--red)',     '● 실패'],
+    };
+    const [c,t] = m[s] || m.unknown;
+    return `<span style="color:${c};font-family:var(--mono);font-size:11px">${t}</span>`;
+  };
+  tbody.innerHTML = advertisers.map(adv => `<tr>
+    <td style="font-weight:600;color:var(--text)">${adv.name}</td>
+    <td class="mono" style="color:var(--blue)">${adv.customerId}</td>
+    <td class="mono" style="color:var(--text3);font-size:10px">${adv.apiKey.slice(0,8)}···</td>
+    <td>${statusHtml(adv.status)}${adv.campCount!=null?' <span style="font-size:10px;color:var(--text3)">캠페인 '+adv.campCount+'개</span>':''}</td>
+    <td>
+      <div style="display:flex;gap:5px">
+        <button class="btn btn-blue btn-sm"  onclick="loadAdvertiser(${adv.id})">불러오기</button>
+        <button class="btn btn-ghost btn-sm" onclick="testAdvertiser(${adv.id})">연결 확인</button>
+        <button class="btn btn-sm" style="background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3)" onclick="deleteAdvertiser(${adv.id})">삭제</button>
+      </div>
+    </td>
+  </tr>`).join('');
+}
+
+
 function goTab(t) {
-  ['kw','autobid','settings'].forEach(id=>{
+  ['kw','autobid','adv','settings'].forEach(id=>{
     document.getElementById('panel-'+id).style.display='none';
     document.getElementById('tab-'+id).classList.remove('on');
   });
   document.getElementById('panel-'+t).style.display='';
   document.getElementById('tab-'+t).classList.add('on');
   if(t==='autobid'){renderAbKw();renderAbLog();}
+  if(t==='adv'){renderAdvertisers();}
 }
 function toggleCfg(){
   const p=document.getElementById('cfg-panel');
@@ -1128,6 +1319,7 @@ function toast(msg,color='var(--green)'){
 
 // BOOT
 startCountdown();
+renderAdvertisers();
 </script>
 </body>
 </html>
