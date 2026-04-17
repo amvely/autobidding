@@ -531,8 +531,13 @@ let rankChart    = null;
 //  STATE HELPERS
 // ════════════════════════════════════════════
 function initState(id) {
+  const a = advertisers.find(x => x.id === id) || {};
   if (!advState[id]) {
     advState[id] = {
+      // 크레덴셜을 state에 직접 저장 — 배열 lookup 불필요
+      apiKey:         a.apiKey     || '',
+      secretKey:      a.secretKey  || '',
+      customerId:     a.customerId || '',
       connected:      false,
       campaigns:      [],
       adGroups:       [],
@@ -549,8 +554,13 @@ function initState(id) {
       countdownTimer: null,
       countdownSec:   3600,
       notifSettings:  {pcAlert:true, moAlert:true, auto:true},
-      abSettings:     {threshold:1.5, upAmt:50, downAmt:30, downEnabled:true, mode:'max', cooldown:5},
+      abSettings:     {threshold:1.5, upAmt:50, downAmt:30, downEnabled:true, mode:'max', cooldown:5, bidMin:70, bidMax:5000},
     };
+  } else {
+    // 광고주 정보 수정 시 크레덴셜 업데이트
+    advState[id].apiKey     = a.apiKey     || advState[id].apiKey;
+    advState[id].secretKey  = a.secretKey  || advState[id].secretKey;
+    advState[id].customerId = a.customerId || advState[id].customerId;
   }
   return advState[id];
 }
@@ -569,16 +579,17 @@ function saveAdvertisers() {
 //  API
 // ════════════════════════════════════════════
 async function apiReq(method, path, body, advId) {
-  const a = advertisers.find(x => x.id === (advId || activeAdvId)) || {};
+  const id = advId || activeAdvId;
+  const st = advState[id] || {};
+  // advState에 저장된 크레덴셜 우선 사용
+  const ak  = st.apiKey     || '';
+  const sk  = st.secretKey  || '';
+  const cid = st.customerId || '';
+  if (!ak || !sk || !cid) throw new Error('API 키 정보 없음 — 광고주를 다시 연결하세요.');
   const r = await fetch(PROXY_BASE, {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({
-      path, method, body: body || null,
-      apiKey:     a.apiKey,
-      secretKey:  a.secretKey,
-      customerId: a.customerId,
-    })
+    body: JSON.stringify({path, method, body: body||null, apiKey:ak, secretKey:sk, customerId:cid})
   });
   if (!r.ok) throw new Error(`HTTP ${r.status}`);
   return r.json();
