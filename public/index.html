@@ -476,7 +476,7 @@ tr:hover td{background:rgba(30,37,56,.6)}
     <div class="set-card">
       <div class="set-card-title">📡 API 연동 정보</div>
       <div class="api-field"><div class="api-key-lbl">순위 조회</div><div class="api-val">GET /stats?ids=...&fields=["pcNxAvgRnk","pcNxAvgCpc","mblNxAvgRnk","mblNxAvgCpc"]&timeUnit=time&datePreset=today</div></div>
-      <div class="api-field"><div class="api-key-lbl">입찰가 변경</div><div class="api-val">PUT /ncc/keywords/{id}?fields=bidAmt · body: {"bidAmt": N}</div></div>
+      <div class="api-field"><div class="api-key-lbl">입찰가 변경</div><div class="api-val">PUT /ncc/keywords/{id}?fields=bidAmt,useGroupBidAmt · body: {"bidAmt": N}</div></div>
       <div class="warn-box">⚠ CORS 문제로 Vercel 프록시를 통해 호출합니다.<br><code style="color:var(--teal);font-family:var(--mono);font-size:11px">const PROXY_BASE = 'https://본인주소.vercel.app/api/call'</code></div>
     </div>
   </div>
@@ -969,7 +969,7 @@ async function applyBid(kwId) {
   const kw  = (st.kws||[]).find(k=>k.id===kwId); if(!kw) return;
   const old = kw.bidAmt; kw.bidAmt = nb;
   try {
-    await apiReq('PUT', `/ncc/keywords/${kwId}?fields=bidAmt`, {nccKeywordId: kwId, nccAdgroupId: kw.adGroupId, bidAmt:nb});
+    await apiReq('PUT', `/ncc/keywords/${kwId}?fields=bidAmt,useGroupBidAmt`, {nccKeywordId: kwId, nccAdgroupId: kw.adGroupId, bidAmt:nb, useGroupBidAmt:false});
     toast(`✅ "${kw.keyword}" → ${nb.toLocaleString()}원`, 'var(--green)');
   } catch(e) { showErr('입찰 실패: '+e.message); kw.bidAmt=old; inp.value=old; }
   renderKw(); renderAbKw();
@@ -1081,7 +1081,7 @@ async function runAutoBidForAdv(advId) {
       if (nb !== kw.bidAmt) {
         const old = kw.bidAmt; kw.bidAmt = nb;
         try {
-          await apiReq('PUT', `/ncc/keywords/${kw.id}?fields=bidAmt`, {nccKeywordId: kw.id, nccAdgroupId: kw.adGroupId, bidAmt: nb}, advId);
+          await apiReq('PUT', `/ncc/keywords/${kw.id}?fields=bidAmt,useGroupBidAmt`, {nccKeywordId: kw.id, nccAdgroupId: kw.adGroupId, bidAmt: nb, useGroupBidAmt: false}, advId);
           st.bidLastChanged[kw.id] = Date.now();
         } catch(e) { kw.bidAmt = old; toast('❌ 입찰 실패: ' + e.message, 'var(--red)'); continue; }
         const a = advertisers.find(x => x.id === advId) || {};
