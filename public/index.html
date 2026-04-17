@@ -22,39 +22,50 @@ html,body{height:100%;background:var(--bg)}
 body,div,span,td,th,input,select,button,label{font-family:var(--sans)}
 .app{background:var(--bg);color:var(--text);font-size:13px;min-height:100vh}
 
-/* HEADER */
+/* ── HEADER ── */
 .hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 18px;background:var(--bg2);border-bottom:1px solid var(--border);gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:50}
 .logo{display:flex;align-items:center;gap:9px;flex-shrink:0}
 .logo-mark{width:32px;height:32px;background:linear-gradient(135deg,#1d4ed8,#3b82f6);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
 .logo-t{font-size:13px;font-weight:700;letter-spacing:-.5px}
 .logo-s{font-size:9px;color:var(--text3);font-family:var(--mono)}
-.hdr-right{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.hdr-right{display:flex;align-items:center;gap:7px}
 .cdown-box{display:flex;align-items:center;gap:5px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:4px 10px}
 .cdown-lbl{font-size:9px;color:var(--text3);font-family:var(--mono);letter-spacing:.5px}
 .cdown-val{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--amber)}
 .icon-btn{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);font-size:15px;transition:all .2s}
 .icon-btn:hover{border-color:var(--border2);color:var(--text);background:var(--bg4)}
 
-/* CFG PANEL */
-.cfg-panel{background:var(--bg2);border-bottom:1px solid var(--border);padding:14px 18px}
-.cfg-grid{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:9px;align-items:end}
-.cfg-f{display:flex;flex-direction:column;gap:4px}
-.cfg-lbl{font-size:9px;color:var(--text3);letter-spacing:.8px;font-family:var(--mono);font-weight:600}
-.cfg-inp{background:var(--bg3);border:1.5px solid var(--border);border-radius:var(--r);padding:7px 11px;font-size:12px;color:var(--text);font-family:var(--mono);outline:none;transition:border .2s;width:100%}
-.cfg-inp:focus{border-color:var(--blue)}
-.cfg-inp::placeholder{color:var(--text3)}
-.err-bar{background:rgba(239,68,68,.12);border:1px solid var(--red);border-radius:6px;padding:7px 14px;margin:8px 18px 0;font-size:11px;color:var(--red);display:none;align-items:center;gap:7px}
+/* ── ADVERTISER TABS ── */
+.adv-bar{display:flex;align-items:center;background:var(--bg2);border-bottom:2px solid var(--border);padding:0 18px;overflow-x:auto;position:sticky;top:54px;z-index:49;gap:0}
+.adv-tab{display:flex;align-items:center;gap:7px;padding:10px 16px;font-size:12px;font-weight:600;color:var(--text3);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap;margin-bottom:-2px;flex-shrink:0}
+.adv-tab:hover:not(.on){color:var(--text2);background:rgba(255,255,255,.03)}
+.adv-tab.on{color:var(--text);border-bottom-color:var(--blue)}
+.adv-tab .adv-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.adv-tab .adv-name{max-width:120px;overflow:hidden;text-overflow:ellipsis}
+.adv-tab .adv-close{opacity:0;font-size:12px;color:var(--text3);transition:opacity .2s;margin-left:2px;line-height:1}
+.adv-tab:hover .adv-close{opacity:1}
+.adv-tab.on .adv-close{opacity:.6}
+.adv-add-btn{display:flex;align-items:center;gap:5px;padding:8px 13px;font-size:12px;color:var(--text3);cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;border-radius:var(--r);margin:4px 0}
+.adv-add-btn:hover{color:var(--blue);background:rgba(59,130,246,.08)}
 
-/* NOTICE */
+/* ── ADD ADVERTISER MODAL ── */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:flex;align-items:center;justify-content:center}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:24px;width:480px;max-width:95vw}
+.modal-title{font-size:15px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
+.modal-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;line-height:1}
+.modal-grid{display:flex;flex-direction:column;gap:11px;margin-bottom:16px}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end}
+
+/* ── NOTICE ── */
 .notice-bar{background:rgba(59,130,246,.08);border-bottom:1px solid rgba(59,130,246,.2);padding:7px 18px;font-size:11px;color:var(--blue);display:flex;align-items:center;gap:7px}
 
-/* TABS */
-.tabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--border);padding:0 18px;overflow-x:auto;position:sticky;top:54px;z-index:40}
-.tab{padding:9px 14px;font-size:12px;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;font-weight:500}
+/* ── SUB TABS ── */
+.tabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--border);padding:0 18px;overflow-x:auto;position:sticky;top:104px;z-index:40}
+.tab{padding:8px 13px;font-size:12px;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;font-weight:500}
 .tab.on{color:var(--amber);border-bottom-color:var(--amber)}
 .tab:hover:not(.on){color:var(--text2)}
 
-/* BUTTONS */
+/* ── BUTTONS ── */
 .btn{border:none;border-radius:var(--r);padding:6px 13px;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:var(--sans)}
 .btn-blue{background:var(--blue);color:#fff}.btn-blue:hover{background:#2563eb}
 .btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border2)}.btn-ghost:hover{background:var(--bg3);color:var(--text)}
@@ -63,7 +74,15 @@ body,div,span,td,th,input,select,button,label{font-family:var(--sans)}
 .btn-sm{padding:4px 10px;font-size:11px}
 .bid-apply{background:var(--amber);border:none;border-radius:5px;padding:3px 8px;font-size:10px;font-weight:700;color:#000;cursor:pointer}.bid-apply:hover{background:var(--amber2)}
 
-/* FILTER ROW */
+/* ── INPUTS ── */
+.cfg-f{display:flex;flex-direction:column;gap:4px}
+.cfg-lbl{font-size:9px;color:var(--text3);letter-spacing:.8px;font-family:var(--mono);font-weight:600}
+.cfg-inp{background:var(--bg3);border:1.5px solid var(--border);border-radius:var(--r);padding:7px 11px;font-size:12px;color:var(--text);font-family:var(--mono);outline:none;transition:border .2s;width:100%}
+.cfg-inp:focus{border-color:var(--blue)}
+.cfg-inp::placeholder{color:var(--text3)}
+.err-bar{background:rgba(239,68,68,.12);border:1px solid var(--red);border-radius:6px;padding:7px 14px;margin:8px 18px 0;font-size:11px;color:var(--red);display:none;align-items:center;gap:7px}
+
+/* ── FILTER ROW ── */
 .filter-row{display:flex;align-items:center;gap:9px;padding:9px 18px;background:var(--bg);border-bottom:1px solid var(--border);flex-wrap:wrap}
 .filter-lbl{font-size:9px;color:var(--text3);letter-spacing:.5px;font-family:var(--mono)}
 .sel{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r);padding:4px 9px;font-size:12px;color:var(--text);outline:none;cursor:pointer}
@@ -74,14 +93,14 @@ body,div,span,td,th,input,select,button,label{font-family:var(--sans)}
 .search-inp::placeholder{color:var(--text3)}
 .s-ico{position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:12px;pointer-events:none}
 
-/* CARDS */
+/* ── CARDS ── */
 .cards{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;padding:12px 18px}
 .sc{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:11px 13px}
 .sc-lbl{font-size:9px;color:var(--text3);margin-bottom:4px;font-family:var(--mono);letter-spacing:.4px}
 .sc-val{font-size:20px;font-weight:700;font-family:var(--mono);line-height:1}
 .sc-sub{font-size:9px;color:var(--text3);margin-top:3px}
 
-/* TABLE */
+/* ── TABLE ── */
 .tbl-wrap{padding:0 18px 20px}
 .tbl-hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 0 7px}
 .tbl-title{font-size:13px;font-weight:700;display:flex;align-items:center;gap:7px}
@@ -116,7 +135,7 @@ tr:hover td{background:rgba(30,37,56,.6)}
 .tog-sm.on .tog-sm-k{transform:translateX(14px)}
 .no-data{text-align:center;padding:40px;color:var(--text3);font-size:12px;line-height:2}
 
-/* CHART PANEL */
+/* ── CHART ── */
 .chart-panel{background:var(--bg2);border-bottom:1px solid var(--border);display:none}
 .chart-hdr{display:flex;align-items:center;justify-content:space-between;padding:11px 18px 7px;flex-wrap:wrap;gap:8px}
 .chart-body{padding:0 18px 14px;height:200px;position:relative}
@@ -125,7 +144,7 @@ tr:hover td{background:rgba(30,37,56,.6)}
 .seg-btn.on{background:var(--blue);color:#fff}
 .seg-btn:not(.on):hover{color:var(--text2);background:var(--bg4)}
 
-/* AUTO-BID */
+/* ── AUTO-BID ── */
 .ab-grid{display:grid;grid-template-columns:340px 1fr;gap:14px;padding:14px 18px}
 .ab-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px}
 .ab-card-title{font-size:12px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:7px}
@@ -150,19 +169,19 @@ tr:hover td{background:rgba(30,37,56,.6)}
 .limit-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
 .limit-inp{background:var(--bg3);border:1.5px solid var(--border);border-radius:var(--r);padding:6px 10px;font-size:13px;color:var(--text);font-family:var(--mono);outline:none;width:100%}
 .limit-inp:focus{border-color:var(--amber)}
+.ab-mode-btn{padding:6px 16px;font-size:11px;color:var(--text3);cursor:pointer;transition:all .2s;font-weight:500;border:none;background:transparent;white-space:nowrap}
+.ab-mode-btn.on{background:var(--blue);color:#fff}
+.ab-mode-btn:not(.on):hover{color:var(--text2);background:var(--bg4)}
 .ab-log-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
 .ab-log-item:last-child{border-bottom:none}
 .ab-log-ico{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
 .ab-log-body{flex:1}
 .ab-log-kw{font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px}
 .ab-log-detail{font-size:10px;color:var(--text3);font-family:var(--mono)}
-.ab-mode-btn{padding:6px 16px;font-size:11px;color:var(--text3);cursor:pointer;transition:all .2s;font-weight:500;border:none;background:transparent;white-space:nowrap}
-.ab-mode-btn.on{background:var(--blue);color:#fff}
-.ab-mode-btn:not(.on):hover{color:var(--text2);background:var(--bg4)}
 
-/* SETTINGS */
+/* ── SETTINGS ── */
 .set-page{padding:20px 24px;max-width:700px}
-.set-h1{font-size:16px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:9px}
+.set-h1{font-size:16px;font-weight:700;margin-bottom:4px}
 .set-desc{font-size:12px;color:var(--text3);margin-bottom:18px;line-height:1.6;padding-bottom:16px;border-bottom:1px solid var(--border)}
 .set-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px}
 .set-card-title{font-size:12px;font-weight:700;margin-bottom:14px;color:var(--text);display:flex;align-items:center;gap:7px}
@@ -172,11 +191,18 @@ tr:hover td{background:rgba(30,37,56,.6)}
 .api-key-lbl{font-size:9px;color:var(--text3);font-family:var(--mono);letter-spacing:.5px;font-weight:700}
 .api-val{font-size:11px;color:var(--blue);font-family:var(--mono);word-break:break-all;line-height:1.6}
 
-/* POPUP / TOAST */
-.pzone{position:fixed;bottom:18px;right:18px;width:300px;z-index:200;display:flex;flex-direction:column;gap:7px;pointer-events:none}
+/* ── EMPTY STATE ── */
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;gap:16px;text-align:center}
+.empty-ico{font-size:48px}
+.empty-title{font-size:16px;font-weight:700;color:var(--text)}
+.empty-desc{font-size:12px;color:var(--text3);line-height:1.7;max-width:320px}
+
+/* ── POPUP / TOAST ── */
+.pzone{position:fixed;bottom:18px;right:18px;width:300px;z-index:300;display:flex;flex-direction:column;gap:7px;pointer-events:none}
 .popup{background:var(--bg2);border:1px solid var(--border2);border-radius:11px;padding:14px;pointer-events:all;animation:popIn .3s cubic-bezier(.175,.885,.32,1.275);border-left:3px solid var(--red)}
 .pop-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
 .pop-title{font-size:10px;font-weight:700;color:var(--red)}
+.pop-adv{font-size:9px;color:var(--text3);font-family:var(--mono);margin-left:6px}
 .pop-close{background:none;border:none;color:var(--text2);cursor:pointer;font-size:14px}
 .pop-kw{font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px}
 .pop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:10px}
@@ -191,73 +217,51 @@ tr:hover td{background:rgba(30,37,56,.6)}
 @keyframes popIn{from{transform:translateY(10px) scale(.96);opacity:0}to{transform:none;opacity:1}}
 @keyframes spin{to{transform:rotate(360deg)}}
 .spinning{animation:spin .7s linear infinite;display:inline-block}
-@media(max-width:900px){.cards{grid-template-columns:repeat(3,1fr)}.ab-grid{grid-template-columns:1fr}.cfg-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.cards{grid-template-columns:1fr 1fr}.cfg-grid{grid-template-columns:1fr}}
+@media(max-width:900px){.cards{grid-template-columns:repeat(3,1fr)}.ab-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.cards{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
 <div class="app">
 
-<!-- HEADER -->
+<!-- ── HEADER ── -->
 <div class="hdr">
   <div class="logo">
     <div class="logo-mark">⚡</div>
     <div>
       <div class="logo-t">파워링크 입찰 관리</div>
-      <div class="logo-s">pcNxAvgRnk · mblNxAvgRnk · 통합검색</div>
+      <div class="logo-s">pcNxAvgRnk · mblNxAvgRnk · 다중 광고주</div>
     </div>
   </div>
   <div class="hdr-right">
     <div class="cdown-box">
       <span class="cdown-lbl">NEXT</span>
-      <span class="cdown-val" id="cdown">60:00</span>
+      <span class="cdown-val" id="cdown">--:--</span>
     </div>
-    <div style="display:flex;align-items:center;gap:5px">
-      <div id="conn-dot" style="width:8px;height:8px;border-radius:50%;background:var(--text3);flex-shrink:0"></div>
-      <span id="conn-txt" style="font-size:11px;font-family:var(--mono);color:var(--text3)">미연결</span>
-    </div>
-    <div class="icon-btn" onclick="toggleCfg()" title="API 설정">⚙</div>
     <div class="icon-btn" id="rbtn" onclick="doRefresh()" title="즉시 갱신">↻</div>
   </div>
 </div>
 
-<!-- CONFIG PANEL -->
-<div class="cfg-panel" id="cfg-panel" style="display:none">
-  <div class="cfg-grid">
-    <div class="cfg-f">
-      <div class="cfg-lbl">API KEY</div>
-      <input class="cfg-inp" id="ci-ak" placeholder="API 키">
-    </div>
-    <div class="cfg-f">
-      <div class="cfg-lbl">SECRET KEY</div>
-      <input class="cfg-inp" id="ci-sk" type="password" placeholder="시크릿 키">
-    </div>
-    <div class="cfg-f">
-      <div class="cfg-lbl">CUSTOMER ID</div>
-      <input class="cfg-inp" id="ci-cid" placeholder="광고주 ID">
-    </div>
-    <div style="display:flex;align-items:center;gap:7px;padding-bottom:1px">
-      <button class="btn btn-blue" onclick="connectApi()">🔗 연결</button>
-      <button class="btn btn-ghost" onclick="toggleCfg()">닫기</button>
-    </div>
-  </div>
+<!-- ── ADVERTISER TABS ── -->
+<div class="adv-bar" id="adv-bar">
+  <div class="adv-add-btn" onclick="openAddModal()">＋ 광고주 추가</div>
 </div>
+
+<!-- ── NOTICE ── -->
+<div class="notice-bar">
+  📡 <strong>pcNxAvgRnk / mblNxAvgRnk</strong> — 네이버 통합검색 PC / 모바일 평균 노출순위 (1시간 단위)
+</div>
+
+<!-- ── SUB TABS ── -->
+<div class="tabs" id="sub-tabs" style="display:none">
+  <div class="tab on" id="tab-kw"       onclick="goSubTab('kw')">📋 키워드 관리</div>
+  <div class="tab"    id="tab-autobid"  onclick="goSubTab('autobid')">⚡ 자동입찰</div>
+  <div class="tab"    id="tab-settings" onclick="goSubTab('settings')">⚙ 설정</div>
+</div>
+
 <div class="err-bar" id="ebar">⚠ <span id="emsg"></span></div>
 
-<!-- NOTICE -->
-<div class="notice-bar">
-  📡 <strong>pcNxAvgRnk</strong> / <strong>mblNxAvgRnk</strong> — 네이버 통합검색 PC / 모바일 평균 노출순위를 조회합니다 (당일 00:00~현재 누적, 1시간 단위 업데이트)
-</div>
-
-<!-- TABS -->
-<div class="tabs">
-  <div class="tab on"  id="tab-kw"       onclick="goTab('kw')">📋 키워드 관리</div>
-  <div class="tab"     id="tab-autobid"  onclick="goTab('autobid')">⚡ 자동입찰</div>
-  <div class="tab"     id="tab-adv"      onclick="goTab('adv')">🏢 광고주 관리</div>
-  <div class="tab"     id="tab-settings" onclick="goTab('settings')">⚙ 설정 · API 정보</div>
-</div>
-
-<!-- CHART PANEL (공통) -->
+<!-- ── CHART (공통) ── -->
 <div class="chart-panel" id="chart-panel">
   <div class="chart-hdr">
     <div>
@@ -266,9 +270,9 @@ tr:hover td{background:rgba(30,37,56,.6)}
     </div>
     <div style="display:flex;align-items:center;gap:7px">
       <div class="seg" id="seg-cd">
-        <div class="seg-btn on"  onclick="setCD('both')">PC+MO</div>
-        <div class="seg-btn"     onclick="setCD('pc')">PC</div>
-        <div class="seg-btn"     onclick="setCD('mo')">MO</div>
+        <div class="seg-btn on" onclick="setCD('both')">PC+MO</div>
+        <div class="seg-btn"    onclick="setCD('pc')">PC</div>
+        <div class="seg-btn"    onclick="setCD('mo')">MO</div>
       </div>
       <button class="btn btn-ghost btn-sm" onclick="closeChart()">✕ 닫기</button>
     </div>
@@ -276,87 +280,58 @@ tr:hover td{background:rgba(30,37,56,.6)}
   <div class="chart-body"><canvas id="rChart"></canvas></div>
 </div>
 
-<!-- ═══ 키워드 관리 ═══ -->
-<div id="panel-kw">
+<!-- ── EMPTY STATE (광고주 없을 때) ── -->
+<div id="panel-empty" class="empty-state">
+  <div class="empty-ico">🏢</div>
+  <div class="empty-title">광고주를 추가해주세요</div>
+  <div class="empty-desc">상단 <strong>＋ 광고주 추가</strong> 버튼으로 네이버 검색광고 API 계정을 등록하면 광고주별 탭에서 키워드 관리 및 자동입찰을 운영할 수 있습니다.</div>
+  <button class="btn btn-blue" onclick="openAddModal()">＋ 광고주 추가</button>
+</div>
+
+<!-- ── 키워드 관리 ── -->
+<div id="panel-kw" style="display:none">
   <div class="filter-row">
     <span class="filter-lbl">캠페인</span>
-    <select class="sel" id="sel-cmp" onchange="onCampChange()">
-      <option value="">캠페인 선택</option>
-    </select>
+    <select class="sel" id="sel-cmp" onchange="onCampChange()"><option value="">캠페인 선택</option></select>
     <span class="filter-lbl">광고그룹</span>
-    <select class="sel" id="sel-grp">
-      <option value="">그룹 선택</option>
-    </select>
+    <select class="sel" id="sel-grp"><option value="">그룹 선택</option></select>
     <button class="btn btn-blue btn-sm" onclick="loadKw()">📥 키워드 불러오기</button>
     <div class="search-wrap" style="margin-left:auto">
       <span class="s-ico">🔍</span>
       <input class="search-inp" id="kw-search" placeholder="키워드 검색..." oninput="renderKw()">
     </div>
   </div>
-
   <div class="cards">
-    <div class="sc">
-      <div class="sc-lbl">총 키워드</div>
-      <div class="sc-val" id="s-tot" style="color:var(--blue)">0</div>
-    </div>
-    <div class="sc">
-      <div class="sc-lbl">PC 목표 달성</div>
-      <div class="sc-val" id="s-good-pc" style="color:var(--green)">0</div>
-      <div class="sc-sub">희망순위 이내</div>
-    </div>
-    <div class="sc">
-      <div class="sc-lbl">MO 목표 달성</div>
-      <div class="sc-val" id="s-good-mo" style="color:var(--teal)">0</div>
-      <div class="sc-sub">희망순위 이내</div>
-    </div>
-    <div class="sc">
-      <div class="sc-lbl">순위 이탈</div>
-      <div class="sc-val" id="s-bad" style="color:var(--red)">0</div>
-      <div class="sc-sub">PC 또는 MO</div>
-    </div>
-    <div class="sc">
-      <div class="sc-lbl">마지막 갱신</div>
-      <div class="sc-val" id="s-upd" style="font-size:12px;color:var(--amber)">-</div>
-      <div class="sc-sub">자동입찰 ON: <span id="s-ab">0</span>개</div>
-    </div>
+    <div class="sc"><div class="sc-lbl">총 키워드</div><div class="sc-val" id="s-tot" style="color:var(--blue)">0</div></div>
+    <div class="sc"><div class="sc-lbl">PC 목표 달성</div><div class="sc-val" id="s-good-pc" style="color:var(--green)">0</div><div class="sc-sub">희망순위 이내</div></div>
+    <div class="sc"><div class="sc-lbl">MO 목표 달성</div><div class="sc-val" id="s-good-mo" style="color:var(--teal)">0</div><div class="sc-sub">희망순위 이내</div></div>
+    <div class="sc"><div class="sc-lbl">순위 이탈</div><div class="sc-val" id="s-bad" style="color:var(--red)">0</div><div class="sc-sub">PC 또는 MO</div></div>
+    <div class="sc"><div class="sc-lbl">마지막 갱신</div><div class="sc-val" id="s-upd" style="font-size:12px;color:var(--amber)">-</div><div class="sc-sub">자동입찰 ON: <span id="s-ab">0</span>개</div></div>
   </div>
-
   <div class="tbl-wrap">
     <div class="tbl-hdr">
-      <div class="tbl-title">📝 키워드 목록
-        <span style="font-size:10px;color:var(--text3);font-weight:400;font-family:var(--mono)">파워링크 전용</span>
-      </div>
-      <div>
-        <button class="btn btn-ghost btn-sm" onclick="saveTargets()">💾 목표 순위 저장</button>
-      </div>
+      <div class="tbl-title">📝 키워드 목록 <span style="font-size:10px;color:var(--text3);font-weight:400;font-family:var(--mono)">파워링크</span></div>
+      <button class="btn btn-ghost btn-sm" onclick="saveTargets()">💾 목표 순위 저장</button>
     </div>
     <div class="tbl-outer">
       <table>
-        <thead>
-          <tr>
-            <th>캠페인</th>
-            <th>광고그룹</th>
-            <th>키워드</th>
-            <th>현재 입찰가</th>
-            <th style="color:rgba(59,130,246,.9)">PC 목표</th>
-            <th style="color:rgba(20,184,166,.9)">MO 목표</th>
-            <th style="color:rgba(59,130,246,.9)">PC 노출순위</th>
-            <th style="color:rgba(59,130,246,.9)">PC 편차</th>
-            <th style="color:rgba(20,184,166,.9)">MO 노출순위</th>
-            <th style="color:rgba(20,184,166,.9)">MO 편차</th>
-            <th>자동입찰</th>
-            <th>상태</th>
-          </tr>
-        </thead>
-        <tbody id="kw-body">
-          <tr><td colspan="12" class="no-data">⚙ API 키를 입력하고 연결 후 캠페인 → 광고그룹을 선택해 키워드를 불러오세요</td></tr>
-        </tbody>
+        <thead><tr>
+          <th>캠페인</th><th>광고그룹</th><th>키워드</th><th>현재 입찰가</th>
+          <th style="color:rgba(59,130,246,.9)">PC 목표</th>
+          <th style="color:rgba(20,184,166,.9)">MO 목표</th>
+          <th style="color:rgba(59,130,246,.9)">PC 순위</th>
+          <th style="color:rgba(59,130,246,.9)">PC 편차</th>
+          <th style="color:rgba(20,184,166,.9)">MO 순위</th>
+          <th style="color:rgba(20,184,166,.9)">MO 편차</th>
+          <th>자동입찰</th><th>상태</th>
+        </tr></thead>
+        <tbody id="kw-body"><tr><td colspan="12" class="no-data">캠페인과 광고그룹을 선택해 키워드를 불러오세요</td></tr></tbody>
       </table>
     </div>
   </div>
 </div>
 
-<!-- ═══ 자동입찰 ═══ -->
+<!-- ── 자동입찰 ── -->
 <div id="panel-autobid" style="display:none">
   <div class="ab-grid">
     <div class="ab-card">
@@ -364,20 +339,18 @@ tr:hover td{background:rgba(30,37,56,.6)}
 
       <div class="set-item">
         <div class="s-lbl">입찰 조정 기준</div>
-        <div class="s-desc">PC / MO 순위 중 어느 쪽을 기준으로 입찰가를 조정할지 선택</div>
-        <div style="display:flex;gap:0;background:var(--bg3);border:1.5px solid var(--border);border-radius:9px;overflow:hidden;width:fit-content;margin-top:4px">
+        <div class="s-desc">PC / MO 순위 중 어느 쪽 기준으로 조정할지</div>
+        <div style="display:flex;gap:0;background:var(--bg3);border:1.5px solid var(--border);border-radius:9px;overflow:hidden;width:fit-content">
           <div class="ab-mode-btn on" id="abm-max" onclick="setAbMode('max')">최대편차</div>
           <div class="ab-mode-btn"    id="abm-pc"  onclick="setAbMode('pc')">PC 우선</div>
           <div class="ab-mode-btn"    id="abm-mo"  onclick="setAbMode('mo')">MO 우선</div>
         </div>
-        <div id="abm-desc" style="margin-top:7px;font-size:10px;color:var(--text3);line-height:1.6">
-          PC / MO 중 이탈이 더 큰 쪽을 기준으로 입찰가 조정
-        </div>
+        <div id="abm-desc" style="margin-top:7px;font-size:10px;color:var(--text3)">PC / MO 중 이탈이 더 큰 쪽 기준</div>
       </div>
 
       <div class="set-item">
         <div class="s-lbl">순위 이탈 임계값</div>
-        <div class="s-desc">기준 순위보다 N 이상 벗어날 때 입찰 조정</div>
+        <div class="s-desc">기준 순위보다 N 이상 벗어날 때 조정</div>
         <div class="stepper">
           <button class="step-btn" onclick="stepAb('threshold',-0.5)">−</button>
           <div class="step-disp"><span class="step-n" id="vab-threshold">1.5</span><span class="step-u">위</span></div>
@@ -387,7 +360,7 @@ tr:hover td{background:rgba(30,37,56,.6)}
 
       <div class="set-item">
         <div class="s-lbl">이탈 시 입찰 인상액</div>
-        <div class="s-desc">순위 낮아질 때 1회 자동 인상 금액</div>
+        <div class="s-desc">순위 낮아질 때 1회 인상 금액</div>
         <div class="stepper">
           <button class="step-btn" onclick="stepAb('upAmt',-10)">−</button>
           <div class="step-disp"><span class="step-n" id="vab-upAmt">50</span><span class="step-u">원</span></div>
@@ -396,8 +369,8 @@ tr:hover td{background:rgba(30,37,56,.6)}
       </div>
 
       <div class="set-item">
-        <div class="s-lbl">초과달성 시 입찰 인하액</div>
-        <div class="s-desc">과투자 방지를 위한 자동 인하 금액</div>
+        <div class="s-lbl">초과달성 시 인하액</div>
+        <div class="s-desc">과투자 방지 자동 인하 금액</div>
         <div class="stepper">
           <button class="step-btn" onclick="stepAb('downAmt',-10)">−</button>
           <div class="step-disp"><span class="step-n" id="vab-downAmt">30</span><span class="step-u">원</span></div>
@@ -411,6 +384,16 @@ tr:hover td{background:rgba(30,37,56,.6)}
         <div class="limit-grid">
           <div class="cfg-f"><div class="cfg-lbl">최소(원)</div><input class="limit-inp" id="ab-min" type="number" value="70" min="70"></div>
           <div class="cfg-f"><div class="cfg-lbl">최대(원)</div><input class="limit-inp" id="ab-max" type="number" value="5000" min="70"></div>
+        </div>
+      </div>
+
+      <div class="set-item">
+        <div class="s-lbl">입찰 조정 후 쿨다운</div>
+        <div class="s-desc">변경 후 이 시간 동안 재조정 안 함</div>
+        <div class="stepper">
+          <button class="step-btn" onclick="stepAb('cooldown',-5)">−</button>
+          <div class="step-disp"><span class="step-n" id="vab-cooldown">5</span><span class="step-u">분</span></div>
+          <button class="step-btn" onclick="stepAb('cooldown',5)">+</button>
         </div>
       </div>
 
@@ -429,7 +412,7 @@ tr:hover td{background:rgba(30,37,56,.6)}
     </div>
 
     <div class="ab-card">
-      <div class="ab-card-title">📋 자동입찰 실행 이력</div>
+      <div class="ab-card-title">📋 실행 이력</div>
       <div id="ab-log"><div class="no-data" style="padding:20px;font-size:11px">실행 이력 없음</div></div>
     </div>
   </div>
@@ -439,160 +422,82 @@ tr:hover td{background:rgba(30,37,56,.6)}
       <div class="ab-card-title">🎯 키워드별 자동입찰 ON/OFF</div>
       <div class="tbl-outer">
         <table>
-          <thead>
-            <tr>
-              <th>키워드</th>
-              <th>광고그룹</th>
-              <th style="color:rgba(59,130,246,.9)">PC 목표</th>
-              <th style="color:rgba(20,184,166,.9)">MO 목표</th>
-              <th style="color:rgba(59,130,246,.9)">PC 현재순위</th>
-              <th style="color:rgba(20,184,166,.9)">MO 현재순위</th>
-              <th>현재 입찰가</th>
-              <th>자동입찰</th>
-            </tr>
-          </thead>
-          <tbody id="ab-kw-body">
-            <tr><td colspan="8" class="no-data" style="padding:20px">키워드를 먼저 불러오세요</td></tr>
-          </tbody>
+          <thead><tr>
+            <th>키워드</th><th>광고그룹</th>
+            <th style="color:rgba(59,130,246,.9)">PC 목표</th>
+            <th style="color:rgba(20,184,166,.9)">MO 목표</th>
+            <th style="color:rgba(59,130,246,.9)">PC 순위</th>
+            <th style="color:rgba(20,184,166,.9)">MO 순위</th>
+            <th>입찰가</th><th>쿨다운</th><th>자동입찰</th>
+          </tr></thead>
+          <tbody id="ab-kw-body"><tr><td colspan="9" class="no-data" style="padding:20px">키워드를 먼저 불러오세요</td></tr></tbody>
         </table>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ═══ 광고주 관리 ═══ -->
-<div id="panel-adv" style="display:none">
-  <div style="padding:16px 18px;max-width:860px">
-
-    <!-- 추가 폼 -->
-    <div class="ab-card" style="margin-bottom:14px">
-      <div class="ab-card-title">➕ 광고주 추가</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 160px;gap:9px;align-items:end">
-        <div class="cfg-f">
-          <div class="cfg-lbl">광고주 이름 (메모용)</div>
-          <input class="cfg-inp" id="adv-name" placeholder="예: 브랜드A">
-        </div>
-        <div class="cfg-f">
-          <div class="cfg-lbl">API KEY</div>
-          <input class="cfg-inp" id="adv-ak" placeholder="API 키">
-        </div>
-        <div class="cfg-f">
-          <div class="cfg-lbl">SECRET KEY</div>
-          <input class="cfg-inp" id="adv-sk" type="password" placeholder="시크릿 키">
-        </div>
-        <div class="cfg-f">
-          <div class="cfg-lbl">CUSTOMER ID</div>
-          <input class="cfg-inp" id="adv-cid" placeholder="고객 ID">
-        </div>
-      </div>
-      <div style="margin-top:10px;display:flex;gap:7px">
-        <button class="btn btn-blue" onclick="addAdvertiser()">➕ 추가</button>
-        <button class="btn btn-ghost btn-sm" onclick="exportAdvertisers()">📤 JSON 내보내기</button>
-        <label class="btn btn-ghost btn-sm" style="cursor:pointer">
-          📥 JSON 불러오기
-          <input type="file" accept=".json" style="display:none" onchange="importAdvertisers(event)">
-        </label>
-      </div>
-    </div>
-
-    <!-- 광고주 목록 -->
-    <div class="ab-card">
-      <div class="ab-card-title">🏢 광고주 목록
-        <span id="adv-count" style="font-size:10px;color:var(--text3);font-weight:400;font-family:var(--mono)">0개</span>
-      </div>
-      <div class="tbl-outer">
-        <table>
-          <thead>
-            <tr>
-              <th>이름</th>
-              <th>CUSTOMER ID</th>
-              <th>API KEY</th>
-              <th>연결 상태</th>
-              <th>작업</th>
-            </tr>
-          </thead>
-          <tbody id="adv-body">
-            <tr><td colspan="5" class="no-data">등록된 광고주가 없습니다</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-
+<!-- ── 설정 ── -->
 <div id="panel-settings" style="display:none">
   <div class="set-page">
-    <div class="set-h1">⚙ 설정 · API 연동 정보</div>
-    <div class="set-desc">순위 조회 방식 및 연동 엔드포인트 안내입니다.</div>
+    <div class="set-h1">⚙ 광고주 설정</div>
+    <div class="set-desc">현재 선택된 광고주의 API 정보 및 알림 설정입니다.</div>
 
     <div class="set-card">
-      <div class="set-card-title">🔔 알림 및 갱신 설정</div>
-      <div class="tog-row">
-        <div class="tog-info">
-          <div class="tog-key">PC 순위 이탈 알림</div>
-          <div class="tog-desc">PC 노출순위 이탈 시 우측 하단 팝업 알림</div>
+      <div class="set-card-title">📝 광고주 정보 수정</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="cfg-f"><div class="cfg-lbl">광고주 이름</div><input class="cfg-inp" id="edit-name" placeholder="이름"></div>
+        <div class="cfg-f"><div class="cfg-lbl">API KEY</div><input class="cfg-inp" id="edit-ak" placeholder="API 키"></div>
+        <div class="cfg-f"><div class="cfg-lbl">SECRET KEY</div><input class="cfg-inp" id="edit-sk" type="password" placeholder="시크릿 키"></div>
+        <div class="cfg-f"><div class="cfg-lbl">CUSTOMER ID</div><input class="cfg-inp" id="edit-cid" placeholder="고객 ID"></div>
+        <div style="display:flex;gap:7px;margin-top:4px">
+          <button class="btn btn-blue btn-sm" onclick="saveAdvEdit()">저장 후 재연결</button>
+          <button class="btn btn-sm" style="background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3)" onclick="deleteCurrentAdv()">이 광고주 삭제</button>
         </div>
+      </div>
+    </div>
+
+    <div class="set-card">
+      <div class="set-card-title">🔔 알림 설정</div>
+      <div class="tog-row">
+        <div class="tog-info"><div class="tog-key">PC 순위 이탈 알림</div></div>
         <div class="tog on" id="tog-pc" onclick="togSet('pcAlert')"><div class="tog-k"></div></div>
       </div>
       <div class="tog-row">
-        <div class="tog-info">
-          <div class="tog-key">MO 순위 이탈 알림</div>
-          <div class="tog-desc">모바일 노출순위 이탈 시 팝업 알림</div>
-        </div>
+        <div class="tog-info"><div class="tog-key">MO 순위 이탈 알림</div></div>
         <div class="tog on" id="tog-mo" onclick="togSet('moAlert')"><div class="tog-k"></div></div>
       </div>
       <div class="tog-row">
-        <div class="tog-info">
-          <div class="tog-key">60분 자동 갱신</div>
-          <div class="tog-desc">1시간 주기로 순위 자동 조회</div>
-        </div>
+        <div class="tog-info"><div class="tog-key">60분 자동 갱신</div></div>
         <div class="tog on" id="tog-auto" onclick="togSet('auto')"><div class="tog-k"></div></div>
-      </div>
-      <div class="tog-row">
-        <div class="tog-info">
-          <div class="tog-key">VAT 포함 표시</div>
-          <div class="tog-desc">CPC 표시 시 부가세(10%) 포함</div>
-        </div>
-        <div class="tog on" id="tog-vat" onclick="togSet('vat')"><div class="tog-k"></div></div>
       </div>
     </div>
 
     <div class="set-card">
       <div class="set-card-title">📡 API 연동 정보</div>
-      <div class="api-field">
-        <div class="api-key-lbl">BASE URL</div>
-        <div class="api-val">https://api.searchad.naver.com</div>
-      </div>
-      <div class="api-field">
-        <div class="api-key-lbl">캠페인 조회 (파워링크)</div>
-        <div class="api-val">GET /ncc/campaigns → campaignTp === 'SEARCH' 필터</div>
-      </div>
-      <div class="api-field">
-        <div class="api-key-lbl">광고그룹 조회</div>
-        <div class="api-val">GET /ncc/adgroups?nccCampaignId={campaignId}</div>
-      </div>
-      <div class="api-field">
-        <div class="api-key-lbl">키워드 조회</div>
-        <div class="api-val">GET /ncc/keywords?nccAdgroupId={adgroupId}</div>
-      </div>
-      <div class="api-field">
-        <div class="api-key-lbl">순위 조회 — pcNxAvgRnk / mblNxAvgRnk</div>
-        <div class="api-val">GET /stats?ids=nkw-XXX,...&amp;fields=["pcNxAvgRnk","pcNxAvgCpc","mblNxAvgRnk","mblNxAvgCpc"]&amp;timeUnit=time&amp;datePreset=today</div>
-      </div>
-      <div class="api-field">
-        <div class="api-key-lbl">응답 구조 예시 (시간대별 행)</div>
-        <div class="api-val">{ "id": "nkw-XXX", "pcNxAvgRnk": 2.1, "mblNxAvgRnk": 3.5, ... }</div>
-      </div>
-      <div class="api-field">
-        <div class="api-key-lbl">입찰가 변경</div>
-        <div class="api-val">PUT /ncc/keywords/{keywordId}?fields=bidAmt · body: {"bidAmt": N}</div>
-      </div>
-      <div class="warn-box">
-        ⚠ CORS 문제로 브라우저에서 직접 API 호출 불가. Vercel 프록시 서버를 통해 호출합니다.<br>
-        <code style="color:var(--teal);font-family:var(--mono);font-size:11px">const PROXY_BASE = 'https://본인주소.vercel.app/api/call'</code>
-      </div>
+      <div class="api-field"><div class="api-key-lbl">순위 조회</div><div class="api-val">GET /stats?ids=...&fields=["pcNxAvgRnk","pcNxAvgCpc","mblNxAvgRnk","mblNxAvgCpc"]&timeUnit=time&datePreset=today</div></div>
+      <div class="api-field"><div class="api-key-lbl">입찰가 변경</div><div class="api-val">PUT /ncc/keywords/{id}?fields=bidAmt · body: {"bidAmt": N}</div></div>
+      <div class="warn-box">⚠ CORS 문제로 Vercel 프록시를 통해 호출합니다.<br><code style="color:var(--teal);font-family:var(--mono);font-size:11px">const PROXY_BASE = 'https://본인주소.vercel.app/api/call'</code></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ADD ADVERTISER MODAL ── -->
+<div class="modal-bg" id="add-modal" style="display:none" onclick="closeAddModal(event)">
+  <div class="modal">
+    <div class="modal-title">
+      🏢 광고주 추가
+      <button class="modal-close" onclick="closeAddModal()">✕</button>
+    </div>
+    <div class="modal-grid">
+      <div class="cfg-f"><div class="cfg-lbl">광고주 이름 (메모용)</div><input class="cfg-inp" id="new-name" placeholder="예: 브랜드A"></div>
+      <div class="cfg-f"><div class="cfg-lbl">API KEY</div><input class="cfg-inp" id="new-ak" placeholder="API 키"></div>
+      <div class="cfg-f"><div class="cfg-lbl">SECRET KEY</div><input class="cfg-inp" id="new-sk" type="password" placeholder="시크릿 키"></div>
+      <div class="cfg-f"><div class="cfg-lbl">CUSTOMER ID</div><input class="cfg-inp" id="new-cid" placeholder="고객 ID (숫자)"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeAddModal()">취소</button>
+      <button class="btn btn-blue" onclick="addAndConnect()">추가 후 연결</button>
     </div>
   </div>
 </div>
@@ -602,211 +507,329 @@ tr:hover td{background:rgba(30,37,56,.6)}
 </div>
 
 <script>
-// ════════════════════════════════════════
+// ════════════════════════════════════════════
 //  CONFIG
-// ════════════════════════════════════════
+// ════════════════════════════════════════════
 const PROXY_BASE = 'https://autobidding-neon.vercel.app/api/call';
 
-let cfg = {apiKey:'', secretKey:'', customerId:''};
-let connected    = false;
-let campaigns    = [];   // 파워링크 캠페인
-let adGroups     = [];   // 현재 캠페인의 광고그룹
-let kws          = [];   // 불러온 키워드
-let stats        = {};   // { kwId: {pcRnk, moRnk, pcCpc, moCpc} }
-let pcTargets    = {};   // { kwId: number }
-let moTargets    = {};   // { kwId: number }
-let autoBidEnabled = {}; // { kwId: bool }
-let autoBidLog   = [];
-let abSettings   = {threshold:1.5, upAmt:50, downAmt:30, downEnabled:true, mode:'max'};
-let notifSettings = {pcAlert:true, moAlert:true, auto:true, vat:true};
-let rankHistory  = {};   // { kwId: {pc:[], mo:[]} }
-let selKwId = null, chartDev = 'both', rankChart = null;
-let countdownTimer = null, autoTimer = null;
+// 광고주 목록 (localStorage 영속)
+let advertisers = JSON.parse(localStorage.getItem('nv_advertisers') || '[]');
 
-// ════════════════════════════════════════
+// 광고주별 독립 상태
+// advState[id] = { connected, campaigns, adGroups, kws, stats, pcTargets, moTargets,
+//                  autoBidEnabled, bidLastChanged, autoBidLog, rankHistory,
+//                  lastUpdated, autoTimer, countdownTimer, countdownSec,
+//                  notifSettings, abSettings }
+let advState = {};
+
+let activeAdvId  = null;
+let selKwId      = null;
+let chartDev     = 'both';
+let rankChart    = null;
+
+// ════════════════════════════════════════════
+//  STATE HELPERS
+// ════════════════════════════════════════════
+function initState(id) {
+  if (!advState[id]) {
+    advState[id] = {
+      connected:      false,
+      campaigns:      [],
+      adGroups:       [],
+      kws:            [],
+      stats:          {},
+      pcTargets:      {},
+      moTargets:      {},
+      autoBidEnabled: {},
+      bidLastChanged: {},
+      autoBidLog:     [],
+      rankHistory:    {},
+      lastUpdated:    null,
+      autoTimer:      null,
+      countdownTimer: null,
+      countdownSec:   3600,
+      notifSettings:  {pcAlert:true, moAlert:true, auto:true},
+      abSettings:     {threshold:1.5, upAmt:50, downAmt:30, downEnabled:true, mode:'max', cooldown:5},
+    };
+  }
+  return advState[id];
+}
+
+function S() { return advState[activeAdvId] || {}; }
+function adv() { return advertisers.find(a => a.id === activeAdvId) || {}; }
+
+// ════════════════════════════════════════════
+//  SAVE
+// ════════════════════════════════════════════
+function saveAdvertisers() {
+  localStorage.setItem('nv_advertisers', JSON.stringify(advertisers));
+}
+
+// ════════════════════════════════════════════
 //  API
-// ════════════════════════════════════════
-async function apiReq(method, path, body, overrideCfg) {
-  const c = overrideCfg || cfg;
+// ════════════════════════════════════════════
+async function apiReq(method, path, body, advId) {
+  const a = advertisers.find(x => x.id === (advId || activeAdvId)) || {};
   const r = await fetch(PROXY_BASE, {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
     body: JSON.stringify({
       path, method, body: body || null,
-      apiKey:     c.apiKey,
-      secretKey:  c.secretKey,
-      customerId: c.customerId,
+      apiKey:     a.apiKey,
+      secretKey:  a.secretKey,
+      customerId: a.customerId,
     })
   });
   if (!r.ok) throw new Error(`HTTP ${r.status}`);
   return r.json();
 }
 
-// ════════════════════════════════════════
-//  연결
-// ════════════════════════════════════════
-async function connectApi() {
-  cfg.apiKey     = document.getElementById('ci-ak').value.trim();
-  cfg.secretKey  = document.getElementById('ci-sk').value.trim();
-  cfg.customerId = document.getElementById('ci-cid').value.trim();
-  if (!cfg.apiKey || !cfg.secretKey || !cfg.customerId) {
-    showErr('API 키, 시크릿 키, 고객 ID를 모두 입력하세요.'); return;
+// ════════════════════════════════════════════
+//  ADVERTISER TABS
+// ════════════════════════════════════════════
+function renderAdvTabs() {
+  const bar = document.getElementById('adv-bar');
+  bar.innerHTML = advertisers.map(a => {
+    const st  = advState[a.id];
+    const on  = a.id === activeAdvId ? 'on' : '';
+    const dot = st?.connected ? 'var(--green)' : 'var(--text3)';
+    return `<div class="adv-tab ${on}" onclick="switchAdv('${a.id}')">
+      <div class="adv-dot" style="background:${dot}"></div>
+      <span class="adv-name">${a.name}</span>
+      <span class="adv-close" onclick="event.stopPropagation();removeAdv('${a.id}')">✕</span>
+    </div>`;
+  }).join('') + `<div class="adv-add-btn" onclick="openAddModal()">＋ 광고주 추가</div>`;
+}
+
+async function switchAdv(id) {
+  activeAdvId = id;
+  initState(id);
+  renderAdvTabs();
+  const st = S();
+
+  // 서브탭 보이기
+  document.getElementById('sub-tabs').style.display = '';
+  document.getElementById('panel-empty').style.display = 'none';
+
+  // 설정 UI 동기화
+  syncAbUI();
+  syncNotifUI();
+  populateEditForm();
+
+  // 캠페인 드롭다운
+  populateCampaignDropdown();
+
+  // 렌더
+  renderKw(); renderAbKw(); renderAbLog(); updateCards();
+
+  // 카운트다운 표시
+  updateCountdownDisplay();
+
+  // 연결 안 됐으면 자동 연결 시도
+  if (!st.connected) {
+    await connectAdv(id);
   }
-  setConn('amber','연결 중...');
+
+  goSubTab('kw');
+}
+
+function removeAdv(id) {
+  if (!confirm('광고주를 삭제하시겠습니까?')) return;
+  // 타이머 정리
+  const st = advState[id];
+  if (st) {
+    clearInterval(st.autoTimer);
+    clearInterval(st.countdownTimer);
+  }
+  delete advState[id];
+  advertisers = advertisers.filter(a => a.id !== id);
+  saveAdvertisers();
+
+  if (activeAdvId === id) {
+    activeAdvId = advertisers[0]?.id || null;
+    if (activeAdvId) {
+      switchAdv(activeAdvId);
+    } else {
+      document.getElementById('sub-tabs').style.display = 'none';
+      showPanel('empty');
+    }
+  }
+  renderAdvTabs();
+  toast('광고주 삭제됨', 'var(--red)');
+}
+
+// ════════════════════════════════════════════
+//  ADD ADVERTISER
+// ════════════════════════════════════════════
+function openAddModal() {
+  ['new-name','new-ak','new-sk','new-cid'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('add-modal').style.display = 'flex';
+  document.getElementById('new-name').focus();
+}
+function closeAddModal(e) {
+  if (e && e.target !== document.getElementById('add-modal')) return;
+  document.getElementById('add-modal').style.display = 'none';
+}
+
+async function addAndConnect() {
+  const name = document.getElementById('new-name').value.trim();
+  const ak   = document.getElementById('new-ak').value.trim();
+  const sk   = document.getElementById('new-sk').value.trim();
+  const cid  = document.getElementById('new-cid').value.trim();
+  if (!name || !ak || !sk || !cid) { showErr('모든 항목을 입력하세요.'); return; }
+
+  const id = 'adv_' + Date.now();
+  advertisers.push({id, name, apiKey:ak, secretKey:sk, customerId:cid});
+  saveAdvertisers();
+  initState(id);
+  document.getElementById('add-modal').style.display = 'none';
+  renderAdvTabs();
+  await switchAdv(id);
+  toast(`✅ "${name}" 추가됨`, 'var(--green)');
+}
+
+// ════════════════════════════════════════════
+//  CONNECT
+// ════════════════════════════════════════════
+async function connectAdv(id) {
+  const st  = initState(id);
+  const a   = advertisers.find(x => x.id === id); if (!a) return;
   try {
-    const data = await apiReq('GET', '/ncc/campaigns');
+    const data = await apiReq('GET', '/ncc/campaigns', null, id);
     const all  = Array.isArray(data) ? data : (data.campaigns || []);
-    // 파워링크(SEARCH) 유형만 필터
-    campaigns = all.filter(c => {
-      const tp = (c.campaignTp || '').toUpperCase();
-      return tp === 'SEARCH' || tp === '' || tp === 'POWERLINK';
+    st.campaigns = all.filter(c => {
+      const tp = (c.campaignTp||'').toUpperCase();
+      return tp==='SEARCH'||tp==='POWERLINK'||tp==='';
     });
-    if (!campaigns.length) campaigns = all;
-    populateCampaignDropdown();
-    connected = true;
-    setConn('green','연결됨');
-    toast('✅ 연결 성공 · 파워링크 캠페인 ' + campaigns.length + '개', 'var(--green)');
-    startCountdown(); startAuto();
-    toggleCfg();
+    if (!st.campaigns.length) st.campaigns = all;
+    st.connected = true;
+    renderAdvTabs();
+    if (id === activeAdvId) populateCampaignDropdown();
+    toast(`✅ "${a.name}" 연결 · 캠페인 ${st.campaigns.length}개`, 'var(--green)');
+    startCountdown(id);
+    startAuto(id);
   } catch(e) {
-    setConn('red','연결 실패');
-    showErr('연결 실패: ' + e.message);
+    st.connected = false;
+    renderAdvTabs();
+    showErr(`"${a.name}" 연결 실패: ${e.message}`);
   }
 }
 
-function setConn(c, t) {
-  document.getElementById('conn-dot').style.background = `var(--${c})`;
-  const el = document.getElementById('conn-txt');
-  el.textContent = t; el.style.color = `var(--${c})`;
-}
-
+// ════════════════════════════════════════════
+//  CAMPAIGN / GROUP
+// ════════════════════════════════════════════
 function populateCampaignDropdown() {
-  const s = document.getElementById('sel-cmp');
-  s.innerHTML = '<option value="">캠페인 선택</option>';
-  campaigns.forEach(c => {
-    const o = document.createElement('option');
-    o.value = c.nccCampaignId; o.textContent = c.name; s.appendChild(o);
+  const st  = S();
+  const sel = document.getElementById('sel-cmp');
+  sel.innerHTML = '<option value="">캠페인 선택</option>';
+  (st.campaigns||[]).forEach(c => {
+    const o=document.createElement('option'); o.value=c.nccCampaignId; o.textContent=c.name; sel.appendChild(o);
   });
+  document.getElementById('sel-grp').innerHTML = '<option value="">그룹 선택</option>';
 }
 
-// ════════════════════════════════════════
-//  캠페인 선택 → 광고그룹 로드
-// ════════════════════════════════════════
 async function onCampChange() {
+  const st     = S();
   const campId = document.getElementById('sel-cmp').value;
   document.getElementById('sel-grp').innerHTML = '<option value="">그룹 선택</option>';
-  if (!campId || !connected) return;
+  if (!campId) return;
   try {
     const data = await apiReq('GET', '/ncc/adgroups?nccCampaignId=' + campId);
-    adGroups = Array.isArray(data) ? data : (data.adGroups || []);
-    const s = document.getElementById('sel-grp');
-    s.innerHTML = '<option value="">전체 그룹</option>';
-    adGroups.forEach(ag => {
-      const o = document.createElement('option');
-      o.value = ag.nccAdgroupId; o.textContent = ag.name; s.appendChild(o);
+    st.adGroups = Array.isArray(data) ? data : (data.adGroups||[]);
+    const sel = document.getElementById('sel-grp');
+    sel.innerHTML = '<option value="">전체 그룹</option>';
+    st.adGroups.forEach(ag => {
+      const o=document.createElement('option'); o.value=ag.nccAdgroupId; o.textContent=ag.name; sel.appendChild(o);
     });
-    toast('광고그룹 ' + adGroups.length + '개', 'var(--blue)');
+    toast('광고그룹 ' + st.adGroups.length + '개', 'var(--blue)');
   } catch(e) { showErr('광고그룹 조회 실패: ' + e.message); }
 }
 
-// ════════════════════════════════════════
-//  키워드 불러오기
-// ════════════════════════════════════════
+// ════════════════════════════════════════════
+//  LOAD KEYWORDS
+// ════════════════════════════════════════════
 async function loadKw() {
-  if (!connected) { showErr('먼저 API를 연결하세요.'); return; }
+  const st     = S();
+  const a      = adv();
   const campId = document.getElementById('sel-cmp').value;
   const grpId  = document.getElementById('sel-grp').value;
+  if (!st.connected) { showErr('연결이 필요합니다.'); return; }
   if (!campId) { showErr('캠페인을 선택하세요.'); return; }
-
   toast('키워드 불러오는 중...', 'var(--blue)');
   try {
-    // adGroups 아직 없으면 로드
-    if (!adGroups.length) {
+    if (!st.adGroups.length) {
       const d = await apiReq('GET', '/ncc/adgroups?nccCampaignId=' + campId);
-      adGroups = Array.isArray(d) ? d : (d.adGroups || []);
+      st.adGroups = Array.isArray(d) ? d : (d.adGroups||[]);
     }
-    const groups  = grpId ? adGroups.filter(ag => ag.nccAdgroupId === grpId) : adGroups;
-    const camp    = campaigns.find(c => c.nccCampaignId === campId) || {};
-    let kwList    = [];
-
+    const groups = grpId ? st.adGroups.filter(ag=>ag.nccAdgroupId===grpId) : st.adGroups;
+    const camp   = st.campaigns.find(c=>c.nccCampaignId===campId)||{};
+    let kwList   = [];
     for (const ag of groups) {
       const d    = await apiReq('GET', '/ncc/keywords?nccAdgroupId=' + ag.nccAdgroupId);
-      const list = Array.isArray(d) ? d : (d.keywords || []);
+      const list = Array.isArray(d) ? d : (d.keywords||[]);
       list.forEach(k => kwList.push({
-        id:          k.nccKeywordId,
-        keyword:     k.keyword,
-        campId,
-        campName:    camp.name || '-',
-        adGroupId:   ag.nccAdgroupId,
-        adGroupName: ag.name,
-        bidAmt:      k.bidAmt || 70,
+        id: k.nccKeywordId, keyword: k.keyword,
+        campId, campName: camp.name||'-',
+        adGroupId: ag.nccAdgroupId, adGroupName: ag.name,
+        bidAmt: k.bidAmt||70,
+        advId: activeAdvId,  // ← 어느 광고주 소속인지 기록
       }));
     }
-
-    kws = kwList;
-    kws.forEach(k => {
-      if (autoBidEnabled[k.id] === undefined) autoBidEnabled[k.id] = false;
-      if (!pcTargets[k.id]) pcTargets[k.id] = null;
-      if (!moTargets[k.id]) moTargets[k.id] = null;
+    st.kws = kwList;
+    kwList.forEach(k => {
+      if (st.autoBidEnabled[k.id]===undefined) st.autoBidEnabled[k.id]=false;
+      if (!st.pcTargets[k.id]) st.pcTargets[k.id]=null;
+      if (!st.moTargets[k.id]) st.moTargets[k.id]=null;
     });
-
     await fetchStats();
     renderKw(); renderAbKw(); updateCards();
-    toast('✅ 키워드 ' + kws.length + '개 로드 완료', 'var(--green)');
+    toast('✅ 키워드 ' + kwList.length + '개 로드', 'var(--green)');
   } catch(e) { showErr('키워드 조회 실패: ' + e.message); }
 }
 
-// ════════════════════════════════════════
-//  통계 조회 — recentAvgRnk + breakdown=pcMblTp
-// ════════════════════════════════════════
-async function fetchStats() {
-  if (!kws.length) return;
-  const ids = kws.map(k => k.id).join(',');
+// ════════════════════════════════════════════
+//  FETCH STATS
+// ════════════════════════════════════════════
+async function fetchStats(advId) {
+  const id = advId || activeAdvId;
+  const st = advState[id]; if (!st||!st.kws.length) return;
+  const ids = st.kws.map(k=>k.id).join(',');
   try {
-    // timeUnit=time 으로 시간대별 데이터 → 당일 누적 평균 순위
     const res  = await apiReq('GET',
-      `/stats?ids=${ids}&fields=["pcNxAvgRnk","pcNxAvgCpc","mblNxAvgRnk","mblNxAvgCpc"]&timeUnit=time&datePreset=today`
+      `/stats?ids=${ids}&fields=["pcNxAvgRnk","pcNxAvgCpc","mblNxAvgRnk","mblNxAvgCpc"]&timeUnit=time&datePreset=today`,
+      null, id
     );
-    const rows = res.data || res || [];
-
-    // 초기화
-    kws.forEach(k => { if (!stats[k.id]) stats[k.id] = {}; });
-
-    // 키워드별로 시간대 행 누적 → 마지막 값(최신)을 현재 순위로 사용
+    const rows = res.data||res||[];
+    st.kws.forEach(k => { if(!st.stats[k.id]) st.stats[k.id]={}; });
     const byKw = {};
-    rows.forEach(item => {
-      if (!byKw[item.id]) byKw[item.id] = [];
-      byKw[item.id].push(item);
+    rows.forEach(item => { if(!byKw[item.id]) byKw[item.id]=[]; byKw[item.id].push(item); });
+    Object.keys(byKw).forEach(kwId => {
+      const sorted = byKw[kwId];
+      const latest = sorted[sorted.length-1]||{};
+      if(!st.stats[kwId]) st.stats[kwId]={};
+      st.stats[kwId].pcRnk = latest.pcNxAvgRnk  || null;
+      st.stats[kwId].pcCpc = latest.pcNxAvgCpc  || null;
+      st.stats[kwId].moRnk = latest.mblNxAvgRnk || null;
+      st.stats[kwId].moCpc = latest.mblNxAvgCpc || null;
+      if(!st.rankHistory[kwId]) st.rankHistory[kwId]={pc:[],mo:[]};
+      st.rankHistory[kwId].pc = sorted.map(r=>r.pcNxAvgRnk).filter(Boolean);
+      st.rankHistory[kwId].mo = sorted.map(r=>r.mblNxAvgRnk).filter(Boolean);
     });
-
-    Object.keys(byKw).forEach(id => {
-      const sorted = byKw[id]; // API가 시간 순 반환
-      // 마지막 시간대 값 = 가장 최신 누적 평균
-      const latest = sorted[sorted.length - 1] || {};
-      if (!stats[id]) stats[id] = {};
-      stats[id].pcRnk = latest.pcNxAvgRnk  || null;
-      stats[id].pcCpc = latest.pcNxAvgCpc  || null;
-      stats[id].moRnk = latest.mblNxAvgRnk || null;
-      stats[id].moCpc = latest.mblNxAvgCpc || null;
-
-      // 시간대별 이력 누적 (차트용)
-      if (!rankHistory[id]) rankHistory[id] = {pc:[], mo:[]};
-      rankHistory[id].pc = sorted.map(r => r.pcNxAvgRnk).filter(Boolean);
-      rankHistory[id].mo = sorted.map(r => r.mblNxAvgRnk).filter(Boolean);
-    });
-
-    document.getElementById('s-upd').textContent =
-      new Date().toLocaleTimeString('ko-KR', {hour:'2-digit', minute:'2-digit'});
+    st.lastUpdated = new Date();
+    if (id === activeAdvId) {
+      document.getElementById('s-upd').textContent =
+        st.lastUpdated.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
+    }
   } catch(e) {
-    toast('통계 오류: ' + e.message, 'var(--red)');
+    if (id === activeAdvId) toast('통계 오류: ' + e.message, 'var(--red)');
   }
 }
 
-// ════════════════════════════════════════
-//  갱신
-// ════════════════════════════════════════
+// ════════════════════════════════════════════
+//  REFRESH
+// ════════════════════════════════════════════
 async function doRefresh() {
-  if (!connected) { showErr('API 연결 후 사용 가능합니다.'); return; }
+  if (!activeAdvId) return;
   const btn = document.getElementById('rbtn'); btn.classList.add('spinning');
   try {
     await fetchStats();
@@ -818,311 +841,347 @@ async function doRefresh() {
   finally { btn.classList.remove('spinning'); }
 }
 
-function startCountdown() {
-  if (countdownTimer) clearInterval(countdownTimer);
-  let sec = 3600;
-  countdownTimer = setInterval(() => {
-    sec--;
-    if (sec <= 0) { sec = 3600; doRefresh(); }
-    document.getElementById('cdown').textContent =
-      String(Math.floor(sec/60)).padStart(2,'0') + ':' + String(sec%60).padStart(2,'0');
+// ════════════════════════════════════════════
+//  TIMER (광고주별 독립)
+// ════════════════════════════════════════════
+function startCountdown(id) {
+  const st = advState[id]; if (!st) return;
+  if (st.countdownTimer) clearInterval(st.countdownTimer);
+  st.countdownSec = 3600;
+  st.countdownTimer = setInterval(() => {
+    st.countdownSec--;
+    if (st.countdownSec <= 0) {
+      st.countdownSec = 3600;
+      fetchStats(id).then(() => {
+        if (id === activeAdvId) { renderKw(); renderAbKw(); updateCards(); checkDeviations(); }
+        runAutoBidForAdv(id);
+      });
+    }
+    if (id === activeAdvId) updateCountdownDisplay();
   }, 1000);
 }
-function startAuto() {
-  if (autoTimer) clearInterval(autoTimer);
-  if (notifSettings.auto) autoTimer = setInterval(doRefresh, 3600000);
+
+function startAuto(id) {
+  const st = advState[id]; if (!st) return;
+  if (st.autoTimer) clearInterval(st.autoTimer);
+  if (st.notifSettings.auto) {
+    st.autoTimer = setInterval(() => {
+      fetchStats(id).then(() => {
+        if (id === activeAdvId) { renderKw(); renderAbKw(); updateCards(); checkDeviations(); }
+        runAutoBidForAdv(id);
+      });
+    }, 3600000);
+  }
 }
 
-// ════════════════════════════════════════
-//  STATUS 헬퍼
-// ════════════════════════════════════════
-function getSt(id) {
-  const pcT = pcTargets[id], moT = moTargets[id], s = stats[id] || {};
-  if (!pcT && !moT) return 'unknown';
-  const pcDev = pcT && s.pcRnk ? s.pcRnk - pcT : 0;
-  const moDev = moT && s.moRnk ? s.moRnk - moT : 0;
-  const worst = Math.max(pcDev, moDev);
-  if (worst <= 0) return 'good';
-  if (worst <= abSettings.threshold) return 'warning';
+function updateCountdownDisplay() {
+  const st = advState[activeAdvId];
+  if (!st) { document.getElementById('cdown').textContent = '--:--'; return; }
+  const s = st.countdownSec;
+  document.getElementById('cdown').textContent =
+    String(Math.floor(s/60)).padStart(2,'0') + ':' + String(s%60).padStart(2,'0');
+}
+
+// ════════════════════════════════════════════
+//  STATUS HELPERS
+// ════════════════════════════════════════════
+function getSt(kwId) {
+  const st   = S();
+  const pcT  = st.pcTargets?.[kwId], moT = st.moTargets?.[kwId];
+  const s    = st.stats?.[kwId]||{};
+  const abs  = st.abSettings || {};
+  if (!pcT&&!moT) return 'unknown';
+  const worst = Math.max(
+    pcT&&s.pcRnk ? s.pcRnk-pcT : 0,
+    moT&&s.moRnk ? s.moRnk-moT : 0
+  );
+  if (worst<=0) return 'good';
+  if (worst<=(abs.threshold||1.5)) return 'warning';
   return 'danger';
 }
 function pill(st) {
-  const m = {good:['pill-g','▲ 달성'],warning:['pill-w','△ 근접'],danger:['pill-d','▼ 이탈'],unknown:['pill-u','미설정']};
-  const [c,t] = m[st] || m.unknown;
-  return `<span class="pill ${c}">${t}</span>`;
+  const m={good:['pill-g','▲ 달성'],warning:['pill-w','△ 근접'],danger:['pill-d','▼ 이탈'],unknown:['pill-u','미설정']};
+  const[c,t]=m[st]||m.unknown; return `<span class="pill ${c}">${t}</span>`;
 }
-function rColor(st) {
-  return {good:'var(--green)',warning:'var(--amber)',danger:'var(--red)',unknown:'var(--text3)'}[st] || 'var(--text3)';
-}
-function devHtml(cur, tgt) {
-  if (!cur || !tgt) return '<span style="color:var(--text3)">-</span>';
-  const d = parseFloat((cur - tgt).toFixed(1));
-  if (d === 0) return '<span class="dev-zero">±0</span>';
-  if (d > 0)   return `<span class="dev-pos">+${d}</span>`;
-  return `<span class="dev-neg">${d}</span>`;
-}
-function fmtR(v) { return v ? v.toFixed(1) + '위' : '-'; }
+function rColor(st){ return {good:'var(--green)',warning:'var(--amber)',danger:'var(--red)',unknown:'var(--text3)'}[st]||'var(--text3)'; }
+function devHtml(cur,tgt){ if(!cur||!tgt)return '<span style="color:var(--text3)">-</span>'; const d=parseFloat((cur-tgt).toFixed(1)); if(d===0)return '<span class="dev-zero">±0</span>'; return d>0?`<span class="dev-pos">+${d}</span>`:`<span class="dev-neg">${d}</span>`; }
+function fmtR(v){ return v?v.toFixed(1)+'위':'-'; }
 
-// ════════════════════════════════════════
-//  RENDER 키워드
-// ════════════════════════════════════════
+// ════════════════════════════════════════════
+//  RENDER KW
+// ════════════════════════════════════════════
 function renderKw() {
-  const q = (document.getElementById('kw-search')?.value || '').toLowerCase();
-  const f = kws.filter(k => !q || k.keyword.toLowerCase().includes(q));
+  const st    = S();
+  const q     = (document.getElementById('kw-search')?.value||'').toLowerCase();
+  const f     = (st.kws||[]).filter(k=>!q||k.keyword.toLowerCase().includes(q));
   const tbody = document.getElementById('kw-body');
-  if (!f.length) {
-    tbody.innerHTML = '<tr><td colspan="12" class="no-data">📭 키워드가 없습니다.</td></tr>';
-    updateCards(); return;
-  }
+  if (!f.length) { tbody.innerHTML='<tr><td colspan="12" class="no-data">📭 키워드가 없습니다.</td></tr>'; updateCards(); return; }
   tbody.innerHTML = f.map(kw => {
-    const s  = stats[kw.id] || {};
-    const st = getSt(kw.id);
-    const c  = rColor(st);
+    const s  = st.stats?.[kw.id]||{};
+    const sv = getSt(kw.id);
+    const c  = rColor(sv);
     return `<tr>
       <td style="font-size:11px;color:var(--text2);white-space:nowrap">${kw.campName}</td>
       <td><span class="grp-tag">${kw.adGroupName}</span></td>
       <td><span class="kw-link" onclick="openChart('${kw.id}')">${kw.keyword}</span></td>
-      <td>
-        <div class="bid-cell">
-          <input class="bid-inp" type="number" id="bid-${kw.id}" value="${kw.bidAmt}" min="70" step="10"
-            onkeydown="if(event.key==='Enter')applyBid('${kw.id}')">
-          <button class="bid-apply" onclick="applyBid('${kw.id}')">적용</button>
-        </div>
-      </td>
-      <td>
-        <input class="rank-inp" type="number" min="1" max="15"
-          value="${pcTargets[kw.id]||''}" placeholder="-"
-          onchange="setPcTarget('${kw.id}',this.value)"
-          style="border-color:rgba(59,130,246,.4)">
-      </td>
-      <td>
-        <input class="rank-inp" type="number" min="1" max="15"
-          value="${moTargets[kw.id]||''}" placeholder="-"
-          onchange="setMoTarget('${kw.id}',this.value)"
-          style="border-color:rgba(20,184,166,.4)">
-      </td>
+      <td><div class="bid-cell">
+        <input class="bid-inp" type="number" id="bid-${kw.id}" value="${kw.bidAmt}" min="70" step="10"
+          onkeydown="if(event.key==='Enter')applyBid('${kw.id}')">
+        <button class="bid-apply" onclick="applyBid('${kw.id}')">적용</button>
+      </div></td>
+      <td><input class="rank-inp" type="number" min="1" max="15" value="${st.pcTargets?.[kw.id]||''}" placeholder="-"
+        onchange="setPcTarget('${kw.id}',this.value)" style="border-color:rgba(59,130,246,.4)"></td>
+      <td><input class="rank-inp" type="number" min="1" max="15" value="${st.moTargets?.[kw.id]||''}" placeholder="-"
+        onchange="setMoTarget('${kw.id}',this.value)" style="border-color:rgba(20,184,166,.4)"></td>
       <td><span class="rank-val" style="color:${c}">${fmtR(s.pcRnk)}</span></td>
-      <td>${devHtml(s.pcRnk, pcTargets[kw.id])}</td>
+      <td>${devHtml(s.pcRnk,st.pcTargets?.[kw.id])}</td>
       <td><span class="rank-val" style="color:${c}">${fmtR(s.moRnk)}</span></td>
-      <td>${devHtml(s.moRnk, moTargets[kw.id])}</td>
-      <td>
-        <div class="tog-sm ${autoBidEnabled[kw.id]?'on':''}" onclick="toggleAb('${kw.id}')">
-          <div class="tog-sm-k"></div>
-        </div>
-      </td>
-      <td>${pill(st)}</td>
+      <td>${devHtml(s.moRnk,st.moTargets?.[kw.id])}</td>
+      <td><div class="tog-sm ${st.autoBidEnabled?.[kw.id]?'on':''}" onclick="toggleAb('${kw.id}')"><div class="tog-sm-k"></div></div></td>
+      <td>${pill(sv)}</td>
     </tr>`;
   }).join('');
   updateCards();
 }
 
-// ════════════════════════════════════════
+// ════════════════════════════════════════════
 //  INLINE BID
-// ════════════════════════════════════════
+// ════════════════════════════════════════════
 async function applyBid(kwId) {
-  const inp = document.getElementById('bid-' + kwId);
-  if (!inp) return;
-  const nb = parseInt(inp.value);
-  if (isNaN(nb) || nb < 70) { showErr('입찰가는 70원 이상이어야 합니다.'); return; }
-  const kw = kws.find(k => k.id === kwId); if (!kw) return;
+  const st  = S();
+  const inp = document.getElementById('bid-'+kwId); if(!inp) return;
+  const nb  = parseInt(inp.value);
+  if (isNaN(nb)||nb<70) { showErr('입찰가는 70원 이상'); return; }
+  const kw  = (st.kws||[]).find(k=>k.id===kwId); if(!kw) return;
   const old = kw.bidAmt; kw.bidAmt = nb;
   try {
-    await apiReq('PUT', `/ncc/keywords/${kwId}?fields=bidAmt`, {bidAmt: nb});
+    await apiReq('PUT', `/ncc/keywords/${kwId}?fields=bidAmt`, {bidAmt:nb});
     toast(`✅ "${kw.keyword}" → ${nb.toLocaleString()}원`, 'var(--green)');
-  } catch(e) {
-    showErr('입찰 실패: ' + e.message);
-    kw.bidAmt = old; inp.value = old;
-  }
+  } catch(e) { showErr('입찰 실패: '+e.message); kw.bidAmt=old; inp.value=old; }
   renderKw(); renderAbKw();
 }
 
-// ════════════════════════════════════════
+// ════════════════════════════════════════════
 //  CHART
-// ════════════════════════════════════════
+// ════════════════════════════════════════════
 function openChart(kwId) {
   selKwId = kwId;
-  const kw = kws.find(k => k.id === kwId) || {};
-  document.getElementById('chart-kw-name').textContent = kw.keyword || '-';
-  document.getElementById('chart-kw-sub').textContent  = kw.adGroupName ? ' · ' + kw.adGroupName : '';
+  const st = S();
+  const kw = (st.kws||[]).find(k=>k.id===kwId)||{};
+  document.getElementById('chart-kw-name').textContent = kw.keyword||'-';
+  document.getElementById('chart-kw-sub').textContent  = kw.adGroupName?' · '+kw.adGroupName:'';
   document.getElementById('chart-panel').style.display = '';
   updateChart();
 }
 function closeChart() {
-  document.getElementById('chart-panel').style.display = 'none';
-  selKwId = null;
-  if (rankChart) { rankChart.destroy(); rankChart = null; }
+  document.getElementById('chart-panel').style.display='none';
+  selKwId=null; if(rankChart){rankChart.destroy();rankChart=null;}
 }
 function setCD(d) {
-  chartDev = d;
-  const m = {both:0,pc:1,mo:2};
-  document.querySelectorAll('#seg-cd .seg-btn').forEach((b,i) => b.classList.toggle('on', i===m[d]));
+  chartDev=d;
+  const m={both:0,pc:1,mo:2};
+  document.querySelectorAll('#seg-cd .seg-btn').forEach((b,i)=>b.classList.toggle('on',i===m[d]));
   updateChart();
 }
 function updateChart() {
-  if (!selKwId || typeof Chart === 'undefined') return;
-  const h   = rankHistory[selKwId] || {pc:[],mo:[]};
-  const pcD = h.pc, moD = h.mo;
-  const len = Math.max(pcD.length, moD.length, 1);
-  const labels = Array.from({length:len}, (_,i) => `${i}시`);
-  const ds = [];
-  if (chartDev==='both'||chartDev==='pc')
-    ds.push({label:'PC 노출순위',  data:pcD, borderColor:'#3b82f6', backgroundColor:'rgba(59,130,246,.12)', tension:.4, fill:true, pointRadius:3});
-  if (chartDev==='both'||chartDev==='mo')
-    ds.push({label:'MO 노출순위', data:moD, borderColor:'#10b981', backgroundColor:'rgba(16,185,129,.1)',  tension:.4, fill:true, pointRadius:3});
-  const pcT=pcTargets[selKwId], moT=moTargets[selKwId];
-  if (pcT&&(chartDev==='both'||chartDev==='pc'))
-    ds.push({label:`PC 목표(${pcT}위)`,data:Array(len).fill(pcT),borderColor:'rgba(59,130,246,.5)',borderDash:[6,3],borderWidth:1.5,fill:false,pointRadius:0});
-  if (moT&&(chartDev==='both'||chartDev==='mo'))
-    ds.push({label:`MO 목표(${moT}위)`,data:Array(len).fill(moT),borderColor:'rgba(20,184,166,.4)',borderDash:[6,3],borderWidth:1.5,fill:false,pointRadius:0});
-  const canvas = document.getElementById('rChart');
-  if (rankChart) rankChart.destroy();
-  rankChart = new Chart(canvas, {
-    type:'line', data:{labels, datasets:ds},
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      scales:{
-        y:{reverse:true,min:1,ticks:{color:'#4b5675',stepSize:1,font:{size:10}},grid:{color:'rgba(255,255,255,.05)'},
-          title:{display:true,text:'노출순위',color:'#4b5675',font:{size:10}}},
-        x:{ticks:{color:'#4b5675',font:{size:10},maxRotation:0},grid:{color:'rgba(255,255,255,.04)'}}
-      },
-      plugins:{
-        legend:{labels:{color:'#94a3b8',font:{size:11},boxWidth:12,usePointStyle:true}},
-        tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}위`},
-          backgroundColor:'rgba(22,27,39,.95)',titleColor:'#e2e8f0',bodyColor:'#94a3b8'}
-      },
-      animation:{duration:400}
-    }
-  });
+  if(!selKwId||typeof Chart==='undefined') return;
+  const st = S();
+  const h  = st.rankHistory?.[selKwId]||{pc:[],mo:[]};
+  const len= Math.max(h.pc.length,h.mo.length,1);
+  const labels=Array.from({length:len},(_,i)=>`${i}시`);
+  const ds=[];
+  if(chartDev==='both'||chartDev==='pc') ds.push({label:'PC',data:h.pc,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.12)',tension:.4,fill:true,pointRadius:3});
+  if(chartDev==='both'||chartDev==='mo') ds.push({label:'MO',data:h.mo,borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.1)',tension:.4,fill:true,pointRadius:3});
+  const pcT=st.pcTargets?.[selKwId],moT=st.moTargets?.[selKwId];
+  if(pcT&&(chartDev==='both'||chartDev==='pc')) ds.push({label:`PC 목표(${pcT}위)`,data:Array(len).fill(pcT),borderColor:'rgba(59,130,246,.5)',borderDash:[6,3],borderWidth:1.5,fill:false,pointRadius:0});
+  if(moT&&(chartDev==='both'||chartDev==='mo')) ds.push({label:`MO 목표(${moT}위)`,data:Array(len).fill(moT),borderColor:'rgba(20,184,166,.4)',borderDash:[6,3],borderWidth:1.5,fill:false,pointRadius:0});
+  if(rankChart) rankChart.destroy();
+  rankChart=new Chart(document.getElementById('rChart'),{type:'line',data:{labels,datasets:ds},options:{responsive:true,maintainAspectRatio:false,
+    scales:{y:{reverse:true,min:1,ticks:{color:'#4b5675',stepSize:1,font:{size:10}},grid:{color:'rgba(255,255,255,.05)'},title:{display:true,text:'노출순위',color:'#4b5675',font:{size:10}}},
+      x:{ticks:{color:'#4b5675',font:{size:10},maxRotation:0},grid:{color:'rgba(255,255,255,.04)'}}},
+    plugins:{legend:{labels:{color:'#94a3b8',font:{size:11},boxWidth:12,usePointStyle:true}},
+      tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}위`},backgroundColor:'rgba(22,27,39,.95)',titleColor:'#e2e8f0',bodyColor:'#94a3b8'}},animation:{duration:400}}});
 }
 
-// ════════════════════════════════════════
+// ════════════════════════════════════════════
 //  AUTO-BID
-// ════════════════════════════════════════
-function toggleAb(id) { autoBidEnabled[id]=!autoBidEnabled[id]; renderKw(); renderAbKw(); updateCards(); }
-
-function setAbMode(mode) {
-  abSettings.mode = mode;
-  ['max','pc','mo'].forEach(m => document.getElementById('abm-'+m).classList.toggle('on', m===mode));
-  const desc = {
-    max: 'PC / MO 중 이탈이 더 큰 쪽을 기준으로 입찰가 조정',
-    pc:  'PC 순위만 기준으로 입찰가 조정 (MO 순위는 참고용)',
-    mo:  'MO 순위만 기준으로 입찰가 조정 (PC 순위는 참고용)',
-  };
-  document.getElementById('abm-desc').textContent = desc[mode];
+// ════════════════════════════════════════════
+function toggleAb(id) {
+  const st=S(); if(!st.autoBidEnabled) return;
+  st.autoBidEnabled[id]=!st.autoBidEnabled[id];
+  renderKw(); renderAbKw(); updateCards();
 }
 
-function getDeviation(kw) {
-  const s = stats[kw.id] || {};
-  const pcT = pcTargets[kw.id], moT = moTargets[kw.id];
-  const pcDev = pcT && s.pcRnk ? s.pcRnk - pcT : 0;
-  const moDev = moT && s.moRnk ? s.moRnk - moT : 0;
-  switch (abSettings.mode) {
-    case 'pc':  return pcDev;
-    case 'mo':  return moDev;
-    case 'max':
-    default:
-      // 절대값이 큰 쪽 선택 (부호 유지)
-      return Math.abs(pcDev) >= Math.abs(moDev) ? pcDev : moDev;
+function getDeviation(kw, st) {
+  const s    = st.stats?.[kw.id]||{};
+  const pcT  = st.pcTargets?.[kw.id];
+  const moT  = st.moTargets?.[kw.id];
+  const abs  = st.abSettings;
+  const pcDev= pcT&&s.pcRnk ? s.pcRnk-pcT : 0;
+  const moDev= moT&&s.moRnk ? s.moRnk-moT : 0;
+  switch(abs.mode) {
+    case 'pc': return pcDev;
+    case 'mo': return moDev;
+    default:   return Math.abs(pcDev)>=Math.abs(moDev)?pcDev:moDev;
   }
 }
 
-async function runAutoBid() {
-  const changed = [];
-  for (const kw of kws) {
-    if (!autoBidEnabled[kw.id]) continue;
-    const s = stats[kw.id]; if (!s) continue;
+// 현재 광고주 실행
+function runAutoBid() { runAutoBidForAdv(activeAdvId); }
 
-    const dev = getDeviation(kw);
-    let dir = 0;
-    if (dev >= abSettings.threshold) dir = 1;
-    else if (abSettings.downEnabled && dev <= -abSettings.threshold) dir = -1;
+async function runAutoBidForAdv(advId) {
+  const st  = advState[advId]; if(!st||!st.kws.length) return;
+  const abs = st.abSettings;
+  const cooldownMs = abs.cooldown * 60 * 1000;
+  const now = Date.now();
+  const changed=[], skipped=[];
 
-    if (dir !== 0) {
-      const amt = dir > 0 ? abSettings.upAmt : abSettings.downAmt;
-      const mn  = parseInt(document.getElementById('ab-min')?.value || 70);
-      const mx  = parseInt(document.getElementById('ab-max')?.value || 5000);
-      const nb  = Math.max(mn, Math.min(mx, kw.bidAmt + dir * amt));
-      if (nb !== kw.bidAmt) {
-        const old = kw.bidAmt; kw.bidAmt = nb;
-        try { await apiReq('PUT', `/ncc/keywords/${kw.id}?fields=bidAmt`, {bidAmt: nb}); }
-        catch(e) { kw.bidAmt = old; continue; }
-        const modeLabel = {max:'최대편차', pc:'PC', mo:'MO'}[abSettings.mode];
-        const e = {keyword:kw.keyword, old, nw:nb, diff:dev, dir:dir>0?'인상':'인하', mode:modeLabel, time:new Date().toLocaleTimeString('ko-KR')};
-        autoBidLog.unshift(e); changed.push(e);
+  for (const kw of st.kws) {
+    if (!st.autoBidEnabled[kw.id]) continue;
+
+    // 쿨다운 체크
+    const last = st.bidLastChanged[kw.id]||0;
+    if (now-last < cooldownMs) {
+      skipped.push(kw.keyword);
+      continue;
+    }
+
+    const dev = getDeviation(kw, st);
+    let dir=0;
+    if (dev>=abs.threshold) dir=1;
+    else if (abs.downEnabled&&dev<=-abs.threshold) dir=-1;
+
+    if (dir!==0) {
+      const amt = dir>0 ? abs.upAmt : abs.downAmt;
+      const mn  = abs.bidMin||70;
+      const mx  = abs.bidMax||5000;
+      const nb  = Math.max(mn,Math.min(mx, kw.bidAmt+dir*amt));
+      if (nb!==kw.bidAmt) {
+        const old=kw.bidAmt; kw.bidAmt=nb;
+        try {
+          await apiReq('PUT',`/ncc/keywords/${kw.id}?fields=bidAmt`,{bidAmt:nb},advId);
+          st.bidLastChanged[kw.id]=Date.now();
+        } catch(e) { kw.bidAmt=old; continue; }
+        const a=advertisers.find(x=>x.id===advId)||{};
+        const modeLabel={max:'최대편차',pc:'PC',mo:'MO'}[abs.mode];
+        const entry={keyword:kw.keyword,old,nw:nb,diff:dev,dir:dir>0?'인상':'인하',mode:modeLabel,advName:a.name,time:new Date().toLocaleTimeString('ko-KR')};
+        st.autoBidLog.unshift(entry); changed.push(entry);
+        await new Promise(r=>setTimeout(r,300));
       }
     }
   }
-  if (changed.length) {
-    renderKw(); renderAbKw(); renderAbLog();
-    changed.forEach(c => toast(`⚡ [${c.mode}] ${c.dir}: "${c.keyword}" → ${c.nw.toLocaleString()}원`, 'var(--amber)'));
+
+  if (advId===activeAdvId) {
+    if (changed.length) { renderKw();renderAbKw();renderAbLog(); }
+    changed.forEach(c=>toast(`⚡ [${c.mode}] ${c.dir}: "${c.keyword}" → ${c.nw.toLocaleString()}원`,'var(--amber)'));
+    if (skipped.length) toast(`⏳ 쿨다운 스킵 ${skipped.length}개`,'var(--text3)');
   }
 }
 
 function stepAb(key, delta) {
-  const lim={threshold:[0.5,5],upAmt:[10,500],downAmt:[10,500]};
-  const [mn,mx]=lim[key]||[1,999];
-  abSettings[key]=parseFloat(Math.max(mn,Math.min(mx,abSettings[key]+delta)).toFixed(1));
-  document.getElementById('vab-'+key).textContent=abSettings[key];
+  const st=S(); if(!st.abSettings) return;
+  const lim={threshold:[0.5,5],upAmt:[10,500],downAmt:[10,500],cooldown:[5,60]};
+  const[mn,mx]=lim[key]||[1,999];
+  st.abSettings[key]=parseFloat(Math.max(mn,Math.min(mx,st.abSettings[key]+delta)).toFixed(1));
+  document.getElementById('vab-'+key).textContent=st.abSettings[key];
 }
 function togAb(key) {
-  abSettings[key]=!abSettings[key];
-  document.getElementById('tog-down').classList.toggle('on',abSettings[key]);
+  const st=S(); if(!st.abSettings) return;
+  st.abSettings[key]=!st.abSettings[key];
+  document.getElementById('tog-down').classList.toggle('on',st.abSettings[key]);
 }
-function saveAbSettings() { toast('✅ 자동입찰 설정 저장됨','var(--green)'); }
+function setAbMode(mode) {
+  const st=S(); if(!st.abSettings) return;
+  st.abSettings.mode=mode;
+  ['max','pc','mo'].forEach(m=>document.getElementById('abm-'+m).classList.toggle('on',m===mode));
+  const desc={max:'PC / MO 중 이탈이 더 큰 쪽 기준',pc:'PC 순위만 기준',mo:'MO 순위만 기준'};
+  document.getElementById('abm-desc').textContent=desc[mode];
+}
+function saveAbSettings() {
+  const st=S();
+  st.abSettings.bidMin=parseInt(document.getElementById('ab-min')?.value||70);
+  st.abSettings.bidMax=parseInt(document.getElementById('ab-max')?.value||5000);
+  toast('✅ 자동입찰 설정 저장됨','var(--green)');
+}
+
+function syncAbUI() {
+  const st=S(); if(!st.abSettings) return;
+  const abs=st.abSettings;
+  ['threshold','upAmt','downAmt','cooldown'].forEach(k=>{
+    const el=document.getElementById('vab-'+k); if(el) el.textContent=abs[k];
+  });
+  document.getElementById('tog-down')?.classList.toggle('on',abs.downEnabled);
+  if(document.getElementById('ab-min')) document.getElementById('ab-min').value=abs.bidMin||70;
+  if(document.getElementById('ab-max')) document.getElementById('ab-max').value=abs.bidMax||5000;
+  setAbMode(abs.mode||'max');
+}
+
+function cooldownHtml(kwId) {
+  const st=S();
+  const last=st.bidLastChanged?.[kwId]||0;
+  if(!last) return '<span style="color:var(--text3);font-size:10px;font-family:var(--mono)">-</span>';
+  const remain=(st.abSettings.cooldown*60*1000)-(Date.now()-last);
+  if(remain<=0) return '<span style="color:var(--green);font-size:10px;font-family:var(--mono)">준비됨</span>';
+  return `<span style="color:var(--amber);font-size:10px;font-family:var(--mono)">⏳ ${Math.ceil(remain/60000)}분</span>`;
+}
 
 function renderAbKw() {
+  const st=S();
   const tbody=document.getElementById('ab-kw-body');
-  if (!kws.length) { tbody.innerHTML='<tr><td colspan="8" class="no-data" style="padding:20px">키워드를 먼저 불러오세요</td></tr>'; return; }
-  tbody.innerHTML=kws.map(kw=>{
-    const s=stats[kw.id]||{};
+  if(!(st.kws||[]).length){tbody.innerHTML='<tr><td colspan="9" class="no-data" style="padding:20px">키워드를 먼저 불러오세요</td></tr>';return;}
+  tbody.innerHTML=st.kws.map(kw=>{
+    const s=st.stats?.[kw.id]||{};
     return `<tr>
       <td class="kw-link" onclick="openChart('${kw.id}')" style="color:var(--text);font-weight:600">${kw.keyword}</td>
       <td><span class="grp-tag">${kw.adGroupName}</span></td>
-      <td class="mono" style="text-align:center;color:var(--blue)">${pcTargets[kw.id]?pcTargets[kw.id]+'위':'-'}</td>
-      <td class="mono" style="text-align:center;color:var(--teal)">${moTargets[kw.id]?moTargets[kw.id]+'위':'-'}</td>
+      <td class="mono" style="text-align:center;color:var(--blue)">${st.pcTargets?.[kw.id]?st.pcTargets[kw.id]+'위':'-'}</td>
+      <td class="mono" style="text-align:center;color:var(--teal)">${st.moTargets?.[kw.id]?st.moTargets[kw.id]+'위':'-'}</td>
       <td class="mono" style="color:var(--blue)">${fmtR(s.pcRnk)}</td>
       <td class="mono" style="color:var(--teal)">${fmtR(s.moRnk)}</td>
       <td class="mono" style="color:var(--amber)">${kw.bidAmt.toLocaleString()}원</td>
-      <td><div class="tog-sm ${autoBidEnabled[kw.id]?'on':''}" onclick="toggleAb('${kw.id}')"><div class="tog-sm-k"></div></div></td>
+      <td>${cooldownHtml(kw.id)}</td>
+      <td><div class="tog-sm ${st.autoBidEnabled?.[kw.id]?'on':''}" onclick="toggleAb('${kw.id}')"><div class="tog-sm-k"></div></div></td>
     </tr>`;
   }).join('');
 }
 
 function renderAbLog() {
+  const st=S();
   const el=document.getElementById('ab-log'); if(!el) return;
-  if (!autoBidLog.length) { el.innerHTML='<div class="no-data" style="padding:20px;font-size:11px">실행 이력 없음</div>'; return; }
-  el.innerHTML=autoBidLog.slice(0,30).map(l=>{
+  if(!(st.autoBidLog||[]).length){el.innerHTML='<div class="no-data" style="padding:20px;font-size:11px">실행 이력 없음</div>';return;}
+  el.innerHTML=st.autoBidLog.slice(0,30).map(l=>{
     const up=l.dir==='인상';
     return `<div class="ab-log-item">
       <div class="ab-log-ico" style="background:${up?'rgba(239,68,68,.15)':'rgba(16,185,129,.15)'}">${up?'▲':'▼'}</div>
       <div class="ab-log-body">
         <div class="ab-log-kw">${l.keyword}</div>
-        <div class="ab-log-detail">${l.old.toLocaleString()}원 → ${l.nw.toLocaleString()}원 · 편차 ${parseFloat(l.diff).toFixed(1)}위 · [${l.mode||''}] · ${l.time}</div>
+        <div class="ab-log-detail">${l.old.toLocaleString()}원 → ${l.nw.toLocaleString()}원 · [${l.mode}] · ${l.time}</div>
       </div>
-      <span style="border-radius:4px;padding:2px 8px;font-size:10px;font-weight:700;flex-shrink:0;
-        background:${up?'rgba(239,68,68,.15)':'rgba(16,185,129,.15)'};color:${up?'var(--red)':'var(--green)'}">${l.dir}</span>
+      <span style="border-radius:4px;padding:2px 8px;font-size:10px;font-weight:700;flex-shrink:0;background:${up?'rgba(239,68,68,.15)':'rgba(16,185,129,.15)'};color:${up?'var(--red)':'var(--green)'}">${l.dir}</span>
     </div>`;
   }).join('');
 }
 
-// ════════════════════════════════════════
+// ════════════════════════════════════════════
 //  ALERTS
-// ════════════════════════════════════════
-let aidCtr = 0;
+// ════════════════════════════════════════════
+let aidCtr=0;
 function checkDeviations() {
-  kws.forEach(kw => {
-    const s=stats[kw.id]||{}, pcT=pcTargets[kw.id], moT=moTargets[kw.id];
-    if (!pcT && !moT) return;
-    const pcBad=notifSettings.pcAlert&&pcT&&s.pcRnk&&(s.pcRnk-pcT>abSettings.threshold);
-    const moBad=notifSettings.moAlert&&moT&&s.moRnk&&(s.moRnk-moT>abSettings.threshold);
-    if (pcBad||moBad) showPopup({id:++aidCtr,kw,pcRnk:s.pcRnk?.toFixed(1)||'-',moRnk:s.moRnk?.toFixed(1)||'-',pcT,moT});
+  const st=S(); if(!st.kws) return;
+  st.kws.forEach(kw=>{
+    const s=st.stats?.[kw.id]||{}, pcT=st.pcTargets?.[kw.id], moT=st.moTargets?.[kw.id];
+    if(!pcT&&!moT) return;
+    const thr=st.abSettings?.threshold||1.5;
+    const pcBad=st.notifSettings?.pcAlert&&pcT&&s.pcRnk&&(s.pcRnk-pcT>thr);
+    const moBad=st.notifSettings?.moAlert&&moT&&s.moRnk&&(s.moRnk-moT>thr);
+    if(pcBad||moBad) showPopup({id:++aidCtr,kw,pcRnk:s.pcRnk?.toFixed(1)||'-',moRnk:s.moRnk?.toFixed(1)||'-',pcT,moT,advName:adv().name});
   });
 }
 function showPopup(a) {
   const zone=document.getElementById('pzone');
-  if (zone.querySelectorAll('.popup').length>=4) zone.querySelector('.popup')?.remove();
+  if(zone.querySelectorAll('.popup').length>=4) zone.querySelector('.popup')?.remove();
   const d=document.createElement('div'); d.className='popup';
-  d.innerHTML=`<div class="pop-hdr"><div class="pop-title">⚠ 순위 이탈</div><button class="pop-close" onclick="this.closest('.popup').remove()">✕</button></div>
+  d.innerHTML=`<div class="pop-hdr"><div><div class="pop-title">⚠ 순위 이탈</div><span class="pop-adv">${a.advName||''}</span></div><button class="pop-close" onclick="this.closest('.popup').remove()">✕</button></div>
     <div class="pop-kw">${a.kw.keyword}</div>
     <div class="pop-grid">
       <div class="pop-stat"><div class="pop-sl">PC 목표</div><div class="pop-sv" style="color:var(--green)">${a.pcT||'-'}위</div></div>
@@ -1136,175 +1195,89 @@ function showPopup(a) {
   zone.appendChild(d); setTimeout(()=>d.remove(),20000);
 }
 
-// ════════════════════════════════════════
+// ════════════════════════════════════════════
 //  CARDS
-// ════════════════════════════════════════
+// ════════════════════════════════════════════
 function updateCards() {
-  document.getElementById('s-tot').textContent     = kws.length;
-  document.getElementById('s-good-pc').textContent =
-    kws.filter(k=>{const s=stats[k.id]||{},t=pcTargets[k.id];return t&&s.pcRnk&&s.pcRnk<=t;}).length;
-  document.getElementById('s-good-mo').textContent =
-    kws.filter(k=>{const s=stats[k.id]||{},t=moTargets[k.id];return t&&s.moRnk&&s.moRnk<=t;}).length;
-  document.getElementById('s-bad').textContent     = kws.filter(k=>getSt(k.id)==='danger').length;
-  document.getElementById('s-ab').textContent      = kws.filter(k=>autoBidEnabled[k.id]).length;
+  const st=S();
+  const kws=st.kws||[];
+  document.getElementById('s-tot').textContent=kws.length;
+  document.getElementById('s-good-pc').textContent=kws.filter(k=>{const s=st.stats?.[k.id]||{},t=st.pcTargets?.[k.id];return t&&s.pcRnk&&s.pcRnk<=t;}).length;
+  document.getElementById('s-good-mo').textContent=kws.filter(k=>{const s=st.stats?.[k.id]||{},t=st.moTargets?.[k.id];return t&&s.moRnk&&s.moRnk<=t;}).length;
+  document.getElementById('s-bad').textContent=kws.filter(k=>getSt(k.id)==='danger').length;
+  document.getElementById('s-ab').textContent=kws.filter(k=>st.autoBidEnabled?.[k.id]).length;
 }
 
-// ════════════════════════════════════════
-//  TARGETS / SETTINGS
-// ════════════════════════════════════════
-function setPcTarget(id,v){const n=parseInt(v);if(n>=1&&n<=15)pcTargets[id]=n;updateCards();}
-function setMoTarget(id,v){const n=parseInt(v);if(n>=1&&n<=15)moTargets[id]=n;updateCards();}
+// ════════════════════════════════════════════
+//  TARGETS / NOTIF
+// ════════════════════════════════════════════
+function setPcTarget(id,v){const n=parseInt(v);if(n>=1&&n<=15){const st=S();if(st.pcTargets)st.pcTargets[id]=n;}updateCards();}
+function setMoTarget(id,v){const n=parseInt(v);if(n>=1&&n<=15){const st=S();if(st.moTargets)st.moTargets[id]=n;}updateCards();}
 function saveTargets(){checkDeviations();toast('✅ 목표 순위 저장됨','var(--green)');}
+
 function togSet(key){
-  notifSettings[key]=!notifSettings[key];
-  const m={pcAlert:'tog-pc',moAlert:'tog-mo',auto:'tog-auto',vat:'tog-vat'};
-  document.getElementById(m[key])?.classList.toggle('on',notifSettings[key]);
-  if(key==='auto'){if(notifSettings.auto)startAuto();else{clearInterval(autoTimer);autoTimer=null;}}
+  const st=S(); if(!st.notifSettings) return;
+  st.notifSettings[key]=!st.notifSettings[key];
+  const m={pcAlert:'tog-pc',moAlert:'tog-mo',auto:'tog-auto'};
+  document.getElementById(m[key])?.classList.toggle('on',st.notifSettings[key]);
+  if(key==='auto'){
+    clearInterval(st.autoTimer);
+    if(st.notifSettings.auto) startAuto(activeAdvId);
+  }
+}
+function syncNotifUI(){
+  const st=S(); if(!st.notifSettings) return;
+  const m={pcAlert:'tog-pc',moAlert:'tog-mo',auto:'tog-auto'};
+  Object.keys(m).forEach(k=>document.getElementById(m[k])?.classList.toggle('on',st.notifSettings[k]));
 }
 
-// ════════════════════════════════════════
-//  광고주 관리
-// ════════════════════════════════════════
-let advertisers = JSON.parse(localStorage.getItem('advertisers') || '[]');
-// { id, name, apiKey, secretKey, customerId, status }
-
-function saveAdvertisers() {
-  localStorage.setItem('advertisers', JSON.stringify(advertisers));
+// ════════════════════════════════════════════
+//  SETTINGS EDIT FORM
+// ════════════════════════════════════════════
+function populateEditForm() {
+  const a=adv();
+  document.getElementById('edit-name').value=a.name||'';
+  document.getElementById('edit-ak').value=a.apiKey||'';
+  document.getElementById('edit-sk').value=a.secretKey||'';
+  document.getElementById('edit-cid').value=a.customerId||'';
 }
-
-function addAdvertiser() {
-  const name = document.getElementById('adv-name').value.trim();
-  const ak   = document.getElementById('adv-ak').value.trim();
-  const sk   = document.getElementById('adv-sk').value.trim();
-  const cid  = document.getElementById('adv-cid').value.trim();
-  if (!name || !ak || !sk || !cid) { showErr('모든 항목을 입력하세요.'); return; }
-  advertisers.push({ id: Date.now(), name, apiKey:ak, secretKey:sk, customerId:cid, status:'unknown' });
+async function saveAdvEdit() {
+  const a=advertisers.find(x=>x.id===activeAdvId); if(!a) return;
+  a.name=document.getElementById('edit-name').value.trim()||a.name;
+  a.apiKey=document.getElementById('edit-ak').value.trim()||a.apiKey;
+  a.secretKey=document.getElementById('edit-sk').value.trim()||a.secretKey;
+  a.customerId=document.getElementById('edit-cid').value.trim()||a.customerId;
   saveAdvertisers();
-  // 입력 초기화
-  ['adv-name','adv-ak','adv-sk','adv-cid'].forEach(id => document.getElementById(id).value = '');
-  renderAdvertisers();
-  toast('✅ 광고주 추가됨', 'var(--green)');
+  const st=advState[activeAdvId]; if(st){st.connected=false;clearInterval(st.autoTimer);clearInterval(st.countdownTimer);}
+  renderAdvTabs();
+  toast('저장됨, 재연결 중...','var(--blue)');
+  await connectAdv(activeAdvId);
 }
+function deleteCurrentAdv(){ removeAdv(activeAdvId); }
 
-function deleteAdvertiser(id) {
-  if (!confirm('삭제하시겠습니까?')) return;
-  advertisers = advertisers.filter(a => a.id !== id);
-  saveAdvertisers(); renderAdvertisers();
-  toast('삭제됨', 'var(--red)');
-}
-
-async function testAdvertiser(id) {
-  const adv = advertisers.find(a => a.id === id); if (!adv) return;
-  adv.status = 'testing'; renderAdvertisers();
-  try {
-    const data = await apiReq('GET', '/ncc/campaigns', null, adv);
-    const count = (Array.isArray(data) ? data : (data.campaigns || [])).length;
-    adv.status = 'ok';
-    adv.campCount = count;
-    toast(`✅ "${adv.name}" 연결 성공 · 캠페인 ${count}개`, 'var(--green)');
-  } catch(e) {
-    adv.status = 'fail';
-    toast(`❌ "${adv.name}" 연결 실패: ${e.message}`, 'var(--red)');
-  }
-  saveAdvertisers(); renderAdvertisers();
-}
-
-function loadAdvertiser(id) {
-  const adv = advertisers.find(a => a.id === id); if (!adv) return;
-  // cfg에 적용하고 연결
-  document.getElementById('ci-ak').value  = adv.apiKey;
-  document.getElementById('ci-sk').value  = adv.secretKey;
-  document.getElementById('ci-cid').value = adv.customerId;
-  cfg.apiKey     = adv.apiKey;
-  cfg.secretKey  = adv.secretKey;
-  cfg.customerId = adv.customerId;
-  // 연결 실행
-  connectApi();
-  toast(`"${adv.name}" 정보 불러옴 → 연결 중...`, 'var(--blue)');
-}
-
-function exportAdvertisers() {
-  const data = advertisers.map(a => ({
-    name: a.name, apiKey: a.apiKey, secretKey: a.secretKey, customerId: a.customerId
-  }));
-  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  a.href = url; a.download = 'advertisers.json'; a.click();
-  URL.revokeObjectURL(url);
-  toast('📤 JSON 내보내기 완료', 'var(--green)');
-}
-
-function importAdvertisers(event) {
-  const file = event.target.files[0]; if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    try {
-      const data = JSON.parse(e.target.result);
-      const list = Array.isArray(data) ? data : [data];
-      list.forEach(a => {
-        if (a.apiKey && a.secretKey && a.customerId) {
-          advertisers.push({ id:Date.now()+Math.random(), name:a.name||'이름없음', apiKey:a.apiKey, secretKey:a.secretKey, customerId:a.customerId, status:'unknown' });
-        }
-      });
-      saveAdvertisers(); renderAdvertisers();
-      toast(`✅ ${list.length}개 불러옴`, 'var(--green)');
-    } catch { showErr('JSON 파일 형식이 올바르지 않습니다.'); }
-  };
-  reader.readAsText(file);
-  event.target.value = '';
-}
-
-function renderAdvertisers() {
-  const tbody = document.getElementById('adv-body');
-  document.getElementById('adv-count').textContent = advertisers.length + '개';
-  if (!advertisers.length) {
-    tbody.innerHTML = '<tr><td colspan="5" class="no-data">등록된 광고주가 없습니다</td></tr>'; return;
-  }
-  const statusHtml = s => {
-    const m = {
-      unknown: ['var(--text3)',   '● 미확인'],
-      testing: ['var(--amber)',   '○ 확인 중...'],
-      ok:      ['var(--green)',   '● 연결됨'],
-      fail:    ['var(--red)',     '● 실패'],
-    };
-    const [c,t] = m[s] || m.unknown;
-    return `<span style="color:${c};font-family:var(--mono);font-size:11px">${t}</span>`;
-  };
-  tbody.innerHTML = advertisers.map(adv => `<tr>
-    <td style="font-weight:600;color:var(--text)">${adv.name}</td>
-    <td class="mono" style="color:var(--blue)">${adv.customerId}</td>
-    <td class="mono" style="color:var(--text3);font-size:10px">${adv.apiKey.slice(0,8)}···</td>
-    <td>${statusHtml(adv.status)}${adv.campCount!=null?' <span style="font-size:10px;color:var(--text3)">캠페인 '+adv.campCount+'개</span>':''}</td>
-    <td>
-      <div style="display:flex;gap:5px">
-        <button class="btn btn-blue btn-sm"  onclick="loadAdvertiser(${adv.id})">불러오기</button>
-        <button class="btn btn-ghost btn-sm" onclick="testAdvertiser(${adv.id})">연결 확인</button>
-        <button class="btn btn-sm" style="background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3)" onclick="deleteAdvertiser(${adv.id})">삭제</button>
-      </div>
-    </td>
-  </tr>`).join('');
-}
-
-
-function goTab(t) {
-  ['kw','autobid','adv','settings'].forEach(id=>{
-    document.getElementById('panel-'+id).style.display='none';
-    document.getElementById('tab-'+id).classList.remove('on');
+// ════════════════════════════════════════════
+//  NAV
+// ════════════════════════════════════════════
+function showPanel(name) {
+  ['kw','autobid','settings','empty'].forEach(id=>{
+    const el=document.getElementById('panel-'+id); if(el) el.style.display='none';
   });
-  document.getElementById('panel-'+t).style.display='';
-  document.getElementById('tab-'+t).classList.add('on');
-  if(t==='autobid'){renderAbKw();renderAbLog();}
-  if(t==='adv'){renderAdvertisers();}
-}
-function toggleCfg(){
-  const p=document.getElementById('cfg-panel');
-  p.style.display=p.style.display==='none'?'':'none';
+  const el=document.getElementById('panel-'+name); if(el) el.style.display='';
 }
 
-// ════════════════════════════════════════
+function goSubTab(t) {
+  ['kw','autobid','settings'].forEach(id=>{
+    document.getElementById('tab-'+id)?.classList.remove('on');
+  });
+  document.getElementById('tab-'+t)?.classList.add('on');
+  showPanel(t);
+  if(t==='autobid'){syncAbUI();renderAbKw();renderAbLog();}
+  if(t==='settings'){populateEditForm();syncNotifUI();}
+}
+
+// ════════════════════════════════════════════
 //  UTILS
-// ════════════════════════════════════════
+// ════════════════════════════════════════════
 function showErr(msg){
   const b=document.getElementById('ebar');
   document.getElementById('emsg').textContent=msg;
@@ -1317,9 +1290,16 @@ function toast(msg,color='var(--green)'){
   wrap.appendChild(t);setTimeout(()=>t.remove(),3000);
 }
 
-// BOOT
-startCountdown();
-renderAdvertisers();
+// ════════════════════════════════════════════
+//  BOOT
+// ════════════════════════════════════════════
+renderAdvTabs();
+if (advertisers.length > 0) {
+  // 저장된 광고주 있으면 첫 번째로 자동 전환
+  switchAdv(advertisers[0].id);
+} else {
+  showPanel('empty');
+}
 </script>
 </body>
 </html>
