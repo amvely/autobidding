@@ -790,10 +790,12 @@ async function fetchStats() {
   const ids = kws.map(k => k.id).join(',');
   try {
     const todayData = await apiReq('GET', `/stats?ids=${ids}&fields=pcNxAvgRnk,pcNxAvgCpc,mblNxAvgRnk,mblNxAvgCpc&timeUnit=time&datePreset=today`);
-    (todayData.data || todayData || []).forEach(item => { stats[item.id] = {...(stats[item.id]||{}), ...item}; });
-    buildHourlyFromApi(todayData.data || todayData || []);
+    const rows = todayData.data || todayData || [];
+    toast(`📊 통계응답: ${rows.length}건`, 'var(--blue)');
+    rows.forEach(item => { stats[item.id] = {...(stats[item.id]||{}), ...item}; });
+    buildHourlyFromApi(rows);
     document.getElementById('s-upd').textContent = new Date().toLocaleTimeString('ko-KR');
-  } catch(e) { console.warn('통계(오늘):', e.message); }
+  } catch(e) { toast(`통계오류: ${e.message}`, 'var(--red)'); }
   try {
     const costData = await apiReq('GET', `/stats?ids=${ids}&fields=cost,avgCpc&timeUnit=day&datePreset=last7Days`);
     const costByKw = {};
@@ -812,6 +814,7 @@ async function fetchStats() {
     });
     document.getElementById('s-upd').textContent = new Date().toLocaleTimeString('ko-KR');
   } catch(e) { console.warn('통계(비용):', e.message); }
+}
 }
 
 function buildHourlyFromApi(timeData) {
