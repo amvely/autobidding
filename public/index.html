@@ -498,8 +498,8 @@ tr:hover td{background:var(--bg3)}
           <div class="set-card">
             <div class="api-field"><div class="api-key">BASE URL</div><div class="api-val">https://api.searchad.naver.com</div></div>
             <div class="api-field"><div class="api-key">인증 방식</div><div class="api-val">HMAC-SHA256 (X-Timestamp · X-API-KEY · X-Customer · X-Signature)</div></div>
-            <div class="api-field"><div class="api-key">순위 조회 (당일 시간대)</div><div class="api-val">GET /stats?ids=nkw-XXXX&amp;fields=pcNxAvgRnk,pcNxAvgCpc,mblNxAvgRnk,mblNxAvgCpc&amp;timeUnit=time&amp;datePreset=today</div></div>
-            <div class="api-field"><div class="api-key">비용 조회 (7일)</div><div class="api-val">GET /stats?ids=nkw-XXXX&amp;fields=cost,avgCpc,clkCnt&amp;timeUnit=day&amp;datePreset=last7Days</div></div>
+            <div class="api-field"><div class="api-key">순위 조회 (당일 시간대)</div><div class="api-val">GET /stats?ids=nkw-XXXX&amp;fields=["pcNxAvgRnk","pcNxAvgCpc","mblNxAvgRnk","mblNxAvgCpc"]&amp;timeUnit=time&amp;datePreset=today</div></div>
+            <div class="api-field"><div class="api-key">비용 조회 (7일)</div><div class="api-val">GET /stats?ids=nkw-XXXX&amp;fields=["cost","avgCpc"],clkCnt&amp;timeUnit=day&amp;datePreset=last7Days</div></div>
             <div class="api-field"><div class="api-key">키워드 조회</div><div class="api-val">GET /ncc/keywords?nccAdgroupId={id}</div></div>
             <div class="api-field"><div class="api-key">입찰 변경</div><div class="api-val">PUT /ncc/keywords/{keywordId} · body: {"bidAmt": N}</div></div>
           </div>
@@ -702,9 +702,11 @@ async function hmacSign(ts, method, path) {
   return btoa(String.fromCharCode(...new Uint8Array(sig)));
 }
 async function apiReq(method, path, body) {
-  const opts = {method, headers:{'Content-Type':'application/json','X-Naver-Path':path}};
-  if (body) opts.body = JSON.stringify(body);
-  const r = await fetch(PROXY_BASE, opts);
+  const r = await fetch(PROXY_BASE, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({path, method, body: body || null})
+  });
   if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
   return r.json();
 }
@@ -789,7 +791,7 @@ async function fetchStats() {
   if (!kws.length) return;
   const ids = kws.map(k => k.id).join(',');
   try {
-    const todayData = await apiReq('GET', `/stats?ids=${ids}&fields=pcNxAvgRnk,pcNxAvgCpc,mblNxAvgRnk,mblNxAvgCpc&timeUnit=time&datePreset=today`);
+    const todayData = await apiReq('GET', `/stats?ids=${ids}&fields=["pcNxAvgRnk","pcNxAvgCpc","mblNxAvgRnk","mblNxAvgCpc"]&timeUnit=time&datePreset=today`);
     const rows = todayData.data || todayData || [];
     toast(`📊 통계응답: ${rows.length}건`, 'var(--blue)');
     rows.forEach(item => { stats[item.id] = {...(stats[item.id]||{}), ...item}; });
@@ -797,7 +799,7 @@ async function fetchStats() {
     document.getElementById('s-upd').textContent = new Date().toLocaleTimeString('ko-KR');
   } catch(e) { toast(`통계오류: ${e.message}`, 'var(--red)'); }
   try {
-    const costData = await apiReq('GET', `/stats?ids=${ids}&fields=cost,avgCpc&timeUnit=day&datePreset=last7Days`);
+    const costData = await apiReq('GET', `/stats?ids=${ids}&fields=["cost","avgCpc"]&timeUnit=day&datePreset=last7Days`);
     const costByKw = {};
     (costData.data || costData || []).forEach(item => {
       if (!costByKw[item.id]) costByKw[item.id] = {costs:[], cpcs:[]};
